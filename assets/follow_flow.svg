@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="400" viewBox="0 0 900 400" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect width="900" height="400" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="20" font-weight="600" fill="#1f2937">一次正常跟随：来源动作 → 系统响应 → 最终状态</text>
+  <text x="880" y="388" text-anchor="end" font-size="12" fill="#9ca3af">示意数据：币种、价格、数量、比例均为虚构</text>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+  </defs>
+  <!-- column headers -->
+  <text x="160" y="76" text-anchor="middle" font-size="15" font-weight="600" fill="#374151">来源动作</text>
+  <text x="450" y="76" text-anchor="middle" font-size="15" font-weight="600" fill="#374151">系统响应（比例 0.1）</text>
+  <text x="740" y="76" text-anchor="middle" font-size="15" font-weight="600" fill="#374151">最终状态</text>
+  <!-- row 1 -->
+  <rect x="40" y="92" width="240" height="56" rx="8" fill="#f3f4f6"/>
+  <text x="56" y="116" font-size="13" fill="#111827">挂限价买单 COIN-A</text>
+  <text x="56" y="136" font-size="12" fill="#6b7280">10.0 @ 100.00</text>
+  <rect x="330" y="92" width="240" height="56" rx="8" fill="#eef2ff"/>
+  <text x="346" y="116" font-size="13" fill="#3730a3">挂 Maker 镜像单</text>
+  <text x="346" y="136" font-size="12" fill="#4338ca">1.0 @ 99.80（向外偏移）</text>
+  <rect x="620" y="92" width="240" height="56" rx="8" fill="#ecfdf5"/>
+  <text x="636" y="124" font-size="13" fill="#065f46">✓ 镜像挂单中</text>
+  <!-- row 2 -->
+  <rect x="40" y="160" width="240" height="56" rx="8" fill="#f3f4f6"/>
+  <text x="56" y="184" font-size="13" fill="#111827">改价</text>
+  <text x="56" y="204" font-size="12" fill="#6b7280">10.0 @ 100.50</text>
+  <rect x="330" y="160" width="240" height="56" rx="8" fill="#eef2ff"/>
+  <text x="346" y="184" font-size="13" fill="#3730a3">原地改价，不撤单重挂</text>
+  <text x="346" y="204" font-size="12" fill="#4338ca">1.0 @ 100.30</text>
+  <rect x="620" y="160" width="240" height="56" rx="8" fill="#ecfdf5"/>
+  <text x="636" y="192" font-size="13" fill="#065f46">✓ 价格已跟随</text>
+  <!-- row 3 -->
+  <rect x="40" y="228" width="240" height="56" rx="8" fill="#f3f4f6"/>
+  <text x="56" y="252" font-size="13" fill="#111827">成交</text>
+  <text x="56" y="272" font-size="12" fill="#6b7280">来源持仓 多 10.0</text>
+  <rect x="330" y="228" width="240" height="56" rx="8" fill="#eef2ff"/>
+  <text x="346" y="252" font-size="13" fill="#3730a3">镜像随之成交</text>
+  <text x="346" y="272" font-size="12" fill="#4338ca">本方持仓 多 1.0</text>
+  <rect x="620" y="228" width="240" height="56" rx="8" fill="#ecfdf5"/>
+  <text x="636" y="260" font-size="13" fill="#065f46">✓ 持仓与来源按比例一致</text>
+  <!-- row 4 -->
+  <rect x="40" y="296" width="240" height="56" rx="8" fill="#f3f4f6"/>
+  <text x="56" y="320" font-size="13" fill="#111827">减仓一半</text>
+  <text x="56" y="340" font-size="12" fill="#6b7280">来源持仓 多 5.0</text>
+  <rect x="330" y="296" width="240" height="56" rx="8" fill="#eef2ff"/>
+  <text x="346" y="320" font-size="13" fill="#3730a3">只减仓 IOC 跟随</text>
+  <text x="346" y="340" font-size="12" fill="#4338ca">减 0.5，本方 多 0.5</text>
+  <rect x="620" y="296" width="240" height="56" rx="8" fill="#ecfdf5"/>
+  <text x="636" y="328" font-size="13" fill="#065f46">✓ 无遗留挂单，状态一致</text>
+  <!-- arrows -->
+  <g stroke="#6b7280" stroke-width="1.5" marker-end="url(#a)">
+    <line x1="282" y1="120" x2="326" y2="120"/><line x1="572" y1="120" x2="616" y2="120"/>
+    <line x1="282" y1="188" x2="326" y2="188"/><line x1="572" y1="188" x2="616" y2="188"/>
+    <line x1="282" y1="256" x2="326" y2="256"/><line x1="572" y1="256" x2="616" y2="256"/>
+    <line x1="282" y1="324" x2="326" y2="324"/><line x1="572" y1="324" x2="616" y2="324"/>
+  </g>
+</svg>

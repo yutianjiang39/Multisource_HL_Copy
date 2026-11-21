@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="560" viewBox="0 0 560 560" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect width="560" height="560" fill="#f3f4f6"/>
+  <rect x="30" y="24" width="500" height="500" rx="14" fill="#ffffff" stroke="#d1d5db"/>
+  <text x="54" y="60" font-size="17" font-weight="600" fill="#111827">📊 定时报告 · 实例 DEMO</text>
+  <text x="54" y="82" font-size="12" fill="#9ca3af">本周期 4 小时 · 示意数据，已重新排版</text>
+  <line x1="54" y1="96" x2="506" y2="96" stroke="#e5e7eb"/>
+  <text x="54" y="124" font-size="14" font-weight="600" fill="#374151">复刻与偏差</text>
+  <text x="54" y="148" font-size="13" fill="#4b5563">来源挂单 128 · 已镜像 121 · 低于最小金额跳过 5</text>
+  <text x="54" y="168" font-size="13" fill="#4b5563">归属屏蔽 2（不计漏跟） · 风控拦截 0</text>
+  <text x="54" y="188" font-size="13" fill="#4b5563">各币偏差均在 ±5% 内</text>
+  <text x="54" y="224" font-size="14" font-weight="600" fill="#374151">成交与延迟</text>
+  <text x="54" y="248" font-size="13" fill="#4b5563">成交 37 笔 · 手续费 0.42 U</text>
+  <text x="54" y="268" font-size="13" fill="#4b5563">跟随减仓 p50 0.8 s · 吃单开仓 p50 0.7 s</text>
+  <text x="54" y="304" font-size="14" font-weight="600" fill="#374151">盈亏（剔除资金进出）</text>
+  <text x="54" y="328" font-size="13" fill="#4b5563">本周期 +1.86 U · 累计 +3.10 U</text>
+  <text x="54" y="348" font-size="13" fill="#4b5563">回撤 1.2%（距止损上限尚远）</text>
+  <rect x="54" y="370" width="452" height="128" rx="8" fill="#fffbeb" stroke="#fcd34d"/>
+  <text x="70" y="396" font-size="14" font-weight="600" fill="#92400e">⚠️ 需要关注</text>
+  <text x="70" y="420" font-size="13" fill="#78350f">· COIN-B 与来源偏差持续 6 分钟，已自动核对恢复</text>
+  <text x="70" y="442" font-size="13" fill="#78350f">· 来源 2 在范围外的交易所有 1 笔成交</text>
+  <text x="70" y="464" font-size="13" fill="#78350f">· AI 分析：偏差来自一次行情推送短暂中断，</text>
+  <text x="70" y="484" font-size="13" fill="#78350f">  恢复后已对齐，无需处理</text>
+</svg>

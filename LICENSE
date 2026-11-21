@@ -1,3 +1,18 @@
+This repository is a showcase. It uses two licenses:
+
+1. Documentation and images (README.md, PUBLIC_SCOPE.md, docs/, assets/)
+   are licensed under the Creative Commons Attribution 4.0 International
+   License (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/legalcode
+
+   Attribution: "Multisource HL Copy, by yutianjiang"
+
+2. Outline code (outline/) is licensed under the MIT License below.
+
+The production implementation of the system is kept in a private repository
+and is not covered by either license.
+
+-------------------------------------------------------------------------------
+
 MIT License
 
 Copyright (c) 2026 yutianjiang
