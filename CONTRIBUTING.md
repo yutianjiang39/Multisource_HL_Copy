@@ -4,7 +4,7 @@
 
 ## 中文
 
-感谢帮助改进公开展示材料。本仓库接受的改进围绕文档、翻译和合成体验示例展开；它不接受私有交易系统的实现贡献，也不是生产问题的日志收集入口。
+感谢帮助改进公开展示材料。本仓库接受的改进围绕文档、翻译、性能口径和合成体验示例展开；它不接受私有交易系统的实现贡献，也不是生产问题的日志收集入口。
 
 ### 适合提交的改进
 
@@ -13,6 +13,7 @@
 - 提升概念图与报告示意的可读性。
 - 添加完全虚构的场景，帮助理解来源、动作、状态与结果。
 - 修正公开样例之间的明显不一致，同时保留其合成性质。
+- 补充经过披露审阅的性能汇总，说明分位数、样本、负载、测量边界与版本范围。
 
 提出建议时，请说明访问者遇到了什么阅读问题，以及你的修改怎样帮助理解。
 
@@ -38,7 +39,7 @@
    ```bash
    python3 tools/check_public.py
    ```
-5. 人工阅读修改后的内容，确认标签清楚、链接有意义，并且没有加入真实运行资料。
+5. 人工阅读修改后的内容，确认标签清楚、链接有意义，并且没有加入原始运行记录或敏感细节。经过整理的真实统计按 measured_aggregate 单独标注。
 6. 在提交说明中概括修改原因、涉及文件和公开检查结果。
 
 公开检查只覆盖脚本定义的展示包检查项。检查通过不代表交易程序经过测试，也不替代内容复核。不要为展示改进引入账户访问、联网采集或交易操作。
@@ -57,7 +58,7 @@
 
 ## English
 
-Thank you for helping improve the public showcase. Contributions focus on documentation, translation, and synthetic experience examples. This repository does not accept implementations of the private trading system and is not an intake channel for production logs.
+Thank you for helping improve the public showcase. Contributions focus on documentation, translation, measurement definitions, and synthetic experience examples. This repository does not accept implementations of the private trading system and is not an intake channel for production logs.
 
 ### Suitable contributions
 
@@ -66,6 +67,7 @@ Thank you for helping improve the public showcase. Contributions focus on docume
 - Improve the readability of conceptual diagrams and report illustrations.
 - Add entirely fictional scenarios that explain sources, actions, states, and outcomes.
 - Correct clear inconsistencies between public examples while preserving their synthetic nature.
+- Add disclosure-reviewed performance summaries with percentiles, samples, workload, measurement boundaries, and version scope.
 
 When suggesting a change, explain the reader's difficulty and how the change improves understanding.
 
@@ -91,7 +93,7 @@ Construct synthetic examples from fictional situations. Use labels such as SOURC
    ```bash
    python3 tools/check_public.py
    ```
-5. Read the changed materials manually to confirm clear labels, meaningful links, and the absence of real operational records.
+5. Read the changed materials manually to confirm clear labels, meaningful links, and the absence of raw operational records or sensitive details. Curated real aggregates are separately labeled measured_aggregate.
 6. Summarize the reason for the change, the affected files, and the public-check result in the submission.
 
 The public check covers only the showcase checks defined by the script. Passing it does not mean that a trading program was tested and does not replace content review. Do not introduce account access, network collection, or trading actions for a showcase improvement.

@@ -123,7 +123,7 @@ These questions assess the clarity and completeness of public materials, not the
 | JSON can be used directly as account configuration | The files are for reading, not production interfaces or configuration contracts |
 | Showing a state proves that a feature is live | Illustrations are not implementation, deployment, or verification evidence |
 
-The public package provides no reproducible production experiment, real-market test, independent audit, or benchmark measurement. Assessing real execution quality requires separate evidence tied to a specific version and environment. These synthetic materials cannot replace it.
+This page illustrates the experience; real historical measurements are in [Performance](performance.md) and [benchmarks/](../../benchmarks/README.md). Those summaries describe results under their recorded conditions. Synthetic scenarios do not replace measurements, and measurements are not an independent audit or a current-build rerun.
 
 ## Giving feedback
 

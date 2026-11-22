@@ -1,72 +1,83 @@
 # Multisource HL Copy
 
-**Multi-source trading execution for Hyperliquid · Public showcase**
+**Multi-source copy-trading execution for Hyperliquid**
 
-A clear view of source intent, execution outcomes, and the risks that need attention.
+Event-driven · Rust execution · Multiple followed targets · Risk and operational visibility
 
-[中文](README.md) · [Capabilities](docs/en/features.md) · [Scenarios](docs/en/showcase.md) · [Overview](docs/en/architecture.md) · [Evidence & limits](docs/en/testing.md) · [FAQ](docs/en/faq.md)
+[中文](README.md) · [Performance](docs/en/performance.md) · [Capabilities](docs/en/features.md) · [Overview](docs/en/architecture.md) · [Scenarios](docs/en/showcase.md) · [Public scope](docs/en/public-scope.md)
 
-![Sources, execution concerns, and operational visibility. A concept illustration, not a production architecture.](assets/overview.svg)
+One execution account follows multiple sources, spanning order following, position changes, risk intervention, and reporting. The project focuses on low local processing overhead, burst-oriented signal handling, and multi-source operation.
 
-> This repository presents the project's capability scope, product ideas, and synthetic scenarios. The production trading implementation remains private. This package cannot connect an account or trade. Every illustration and data example is independently constructed for explanation, not taken from a live run.
+![Performance summary: 43 ms local-submission p99, 150 signals/s burst tests, and eight configurable targets, each labeled with its evidence scope.](assets/performance.svg)
 
-## What the project focuses on
+## Performance snapshot
 
-When one execution account follows several sources, an operator needs to understand which source changes are visible, what happened on the execution side, what is still uncertain, and what needs attention.
-
-Multisource HL Copy organizes execution, operational control, and reporting around those questions. Public materials explain the product experience while keeping execution algorithms, decision rules, and deployment details private.
-
-## Capability map
-
-These are capability themes, not claims that this public package verifies a live trading system.
-
-| Theme | The operator's question | Public presentation |
+| Strength | Recorded result | Scope |
 | --- | --- | --- |
-| Multiple sources | How can activity and state be understood separately? | Anonymous source cards and parallel scenarios |
-| Order following | How do source intentions relate to execution outcomes? | Conceptual creation, change, and end examples |
-| Position changes | Which changes or unresolved facts need attention? | Qualitative descriptions without sizing rules |
-| Operational control | What is running, what is in scope, and what was observed? | Responsibility and interaction descriptions |
-| Risk visibility | Which facts are confirmed, and which remain unknown? | Illustrative notices and review items |
-| Periodic reporting | What changed, and what should be reviewed next? | A synthetic report with a field guide |
+| **Low local submission latency** | **p99 43 ms · p50 24 ms** | 1,765 mainnet order samples, local receipt to recorded submission |
+| **Burst signal handling** | **150 signals/s across two sources** | Three 5-second bursts per run, ten simulated runs; per-run p99 139–186 ms |
+| **Target configuration** | **Up to 8 targets** | Total unique targets including the primary; not a full-load capacity claim |
+| **Multi-source validation** | **3 live targets · 5 rehearsal targets** | About 80 minutes of mainnet operation and about 5 minutes of live-data rehearsal |
+| **End-to-end mainnet observations** | **0.81 s placement · 0.67 s cancellation** | Medians in a small scripted-source test; 73 and 69 samples respectively |
 
-See [Capabilities](docs/en/features.md). Scenario endings are authored examples. They do not imply that a source order must be followed, filled, or filled at the same price.
+These are sanitized summaries of the project's November 2026 historical records, not fictional display values. Results have different builds, workloads, and timing boundaries. The 43 ms figure excludes exchange confirmation; 150/s is a short-burst offered rate. See [Performance](docs/en/performance.md) and the [measurement data](benchmarks/results.json) for conditions, statistics, and unmeasured areas.
 
-## A three-minute tour
+## Capabilities
 
-1. Read [Scenarios](docs/en/showcase.md) for order changes, multiple sources, risk notices, and reports.
-2. Read [Overview](docs/en/architecture.md) for responsibilities and product trade-offs.
-3. Read [Evidence & limits](docs/en/testing.md) to distinguish descriptions, illustrations, and verification.
-4. Read [Public scope](docs/en/public-scope.md) for this edition's disclosure boundaries.
+| Capability | Operator value |
+| --- | --- |
+| **Multiple sources** | Organize several sources within one execution account with source context and outcome descriptions |
+| **Order lifecycle** | Resting-order mirroring, changes, cancellations, and execution-state visibility |
+| **Fills and position changes** | Taker opening, follow reductions, and remaining-position handling |
+| **Operational control** | Start, stop, settings changes, and source adjustments |
+| **Risk intervention** | Risk evaluation, pausing or stopping, cancellations, and position closing with visible outcomes and unresolved states |
+| **Reporting and traceability** | Event notices, periodic reports, and operational records |
 
-![Source intent, execution-side observations, and facts still awaiting confirmation. Synthetic content only.](assets/follow_flow.svg)
+See [Capabilities](docs/en/features.md). A capability description does not guarantee fills, recovery, or loss limitation in every scenario.
 
-## What works locally
+## Engineering strengths
 
-Read the Markdown, open the SVGs, or inspect the [synthetic examples](examples/README.md). To validate and package the showcase, use Python 3.10 or newer:
+**Rust for real-time execution; Python for control and reporting.** Event-driven execution separates latency-sensitive processing from operator-facing responsibilities.
+
+**Percentiles with workload definitions.** Local p99, simulated bursts, and mainnet end-to-end observations are reported separately, rather than combined into a nonexistent result.
+
+**Layered multi-source evidence.** Configuration limits, live-data rehearsals, mainnet operation, and simulated load each have an explicit scope.
+
+**An operational workflow.** The system addresses state observation, risk intervention, control, and reporting alongside request submission. Public descriptions retain responsibilities while algorithms and recovery mechanisms remain private.
+
+## Two kinds of public material
+
+| Material | Purpose |
+| --- | --- |
+| [benchmarks/](benchmarks/README.md) | Sanitized historical results, classified as measured_aggregate |
+| [examples/](examples/README.md) | Fictional presentation examples, classified as synthetic |
+
+> This is a public showcase. The production trading implementation remains private. There is no account connection, signing, or trading runtime here. Synthetic scenarios and measured performance are labeled separately.
+
+## Reading guide
+
+| Question | Page |
+| --- | --- |
+| Recorded latency, load, and target scale | [Performance](docs/en/performance.md) |
+| Product capabilities | [Capabilities](docs/en/features.md) |
+| Technical responsibilities and boundaries | [Overview](docs/en/architecture.md) |
+| Following, risk, and reporting experience | [Scenarios](docs/en/showcase.md) |
+| Evidence and verification levels | [Verification](docs/en/testing.md) |
+| Other questions | [FAQ](docs/en/faq.md), [Roadmap](docs/en/roadmap.md), [Releases](RELEASES.md) |
+
+## Local viewing and maintenance
+
+Read the documents, SVGs, and JSON directly. With Python 3.10 or newer, validate and package this public repository:
 
 ```bash
 python3 tools/check_public.py
 python3 tools/package_public.py --output ../Multisource_HL_Copy-public.zip
 ```
 
-These utilities operate on local showcase files only. They contain no trading SDK, account configuration, key input, network query, or order submission. The GitHub workflow also validates only public content.
+These tools process public files only and do not connect trading accounts. See [Maintenance](docs/maintaining-public.md). Suggestions on wording, measurement definitions, and presentation are welcome through [Contributing](CONTRIBUTING.md).
 
-## Reading guide
+## Disclosure and rights
 
-| Page | Contents |
-| --- | --- |
-| [Capabilities](docs/en/features.md) | Product scope, scenarios, and limitations |
-| [Scenarios](docs/en/showcase.md) | Four independently constructed reading journeys |
-| [Overview](docs/en/architecture.md) | High-level responsibilities and observable outcomes |
-| [Evidence & limits](docs/en/testing.md) | What this package can and cannot establish |
-| [FAQ](docs/en/faq.md) | Running, examples, reuse, and feedback |
-| [Roadmap](docs/en/roadmap.md) | Improvements to public presentation materials |
-| [Maintaining this showcase](docs/maintaining-public.md) | Validation, packaging, and history boundaries; bilingual |
-| [Public scope](docs/en/public-scope.md) | Disclosure boundaries and licensing |
-| [Releases](RELEASES.md) | Public-material changes only |
+Performance results, necessary test conditions, and engineering capabilities can be public. Execution algorithms, strategy settings, real identities, raw trades, and deployment access remain private; see [Public scope](docs/en/public-scope.md).
 
-## Feedback and rights
-
-Suggestions about wording, diagrams, translation, and product communication are welcome. Follow [Contributing](CONTRIBUTING.md) and avoid account or deployment details. Read [Security](SECURITY.md) before reporting sensitive material.
-
-Rights are reserved in new original material in this edition; earlier permissions remain applicable to the corresponding material. See [LICENSE](LICENSE) and the [legacy notice](LICENSES/LEGACY_LICENSE.txt). This showcase does not open-source the production implementation or promise returns. Hyperliquid identifies the platform the project concerns; it does not imply affiliation or endorsement.
+See [LICENSE](LICENSE); previous permissions still apply to corresponding material. No returns are promised. Hyperliquid identifies the platform concerned and does not imply affiliation or endorsement.

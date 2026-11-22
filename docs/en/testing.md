@@ -1,46 +1,53 @@
-# Evidence and verification limits
+# Verification and evidence
 
-[中文](../testing.md) · [Home](../../README.en.md)
+[中文](../testing.md) · [Performance](performance.md) · [Home](../../README.en.md)
 
-This page explains what a reader can independently inspect in the public repository. It is not a private-system test report and publishes no production test counts, deployment status, operating dates, or latency results.
+Capabilities, measurements, and necessary conditions should explain the project's strengths together. This page identifies the evidence behind each kind of claim.
 
-## Three different kinds of material
+## Four evidence classes
 
-| Kind | Examples here | What it can establish |
+| Class | Included here | What it supports |
 | --- | --- | --- |
-| Capability descriptions | README, capabilities, responsibility overview | The project's concerns and product communication |
-| Synthetic illustrations | SVGs, JSON, scenario guide | A way to read or present information |
-| Executable local checks | File inventory, links, examples, and figure checks | Current public files meet the specific checked rules |
+| Mainnet measurements and run summaries | Local submission percentiles, end-to-end medians, three-target run summary | Performance and scale observed within the recorded samples and period |
+| Simulated load acceptance | Two-source 150/s load, five-second bursts, ten runs | Request matching and tail latency under that simulated workload |
+| Configuration and capability descriptions | Up to eight configured targets and responsibility descriptions | Support in the supplied configuration, not a saturation point |
+| Synthetic experience and file checks | Scenario figures, examples/, local validation | Presentation, file structure, and disclosure rules |
 
-The first two do not prove real fills or production reliability. Passing the third does not validate the private engine, trading strategy, idempotency, recovery, or risk controls.
+Mainnet results, simulated results, and configuration ceilings are different kinds of evidence. Historical figures belong in [benchmarks/](../../benchmarks/README.md); fictional scenarios belong in [examples/](../../examples/README.md).
 
-## Local validation
+## Checks performed for this edition
 
-From the repository root, with Python 3.10 or newer:
+- Matched values, sample counts, and units to retained project summaries.
+- Distinguished local submission, simulator request receipt, exchange inclusion, and fills.
+- Distinguished aggregate input rate, per-source rate, request matching, and actual fills.
+- Checked configuration limits against recorded rehearsal and live scales.
+- Retained unmeasured areas and conditions that limit extrapolation.
+- Removed identities, deployment details, raw events, and mechanisms unnecessary to interpret the results.
+
+This edition organizes existing records. It did not rerun the private engine, production load tests, or live trades. Historical build results do not automatically establish current-build performance.
+
+## Minimum useful measurement metadata
+
+Name, start/end boundary, unit, samples or runs, offered workload and window, live or simulated environment, version applicability, and limitations that materially change interpretation.
+
+Sanitized hardware class, CPU class, and system load can help fair comparisons. Those fields are not fully retained in the current historical summaries and are left unspecified, not invented. Hosts, access details, and tuning settings need not be disclosed.
+
+Current-build p95/p99, sustained throughput, eight-active-target load, error rates, and peak backlog can be added after measurement. Synthetic values are not substitutes.
+
+## Local checks
+
+Use Python 3.10 or newer:
 
 ```bash
 python3 tools/check_public.py
+python3 tools/check_public.py --self-test
 python3 tools/package_public.py --output ../Multisource_HL_Copy-public.zip
 ```
 
-The validator uses [public-files.txt](../../public-files.txt) as the release inventory. It checks paths, relative links, synthetic JSON labels, safe SVG structure, and selected sensitive patterns. The packager includes only listed files, excludes Git history, and checks the archive content again.
+The checker validates the inventory, relative links, JSON classifications and measurement metadata, SVG structure, and common sensitive patterns. It accepts curated measured_aggregate data instead of forcing real results to be labeled synthetic.
 
-The tools do not query exchanges, read accounts, simulate trading, or inspect private code. They cannot detect every trade secret, semantic disclosure, visual meaning, or previously published history; human review remains necessary.
+CI repeats file validation. It cannot reproduce private experiments, authenticate raw trades, or detect every misleading statistic. Passing a file check is distinct from passing a performance test.
 
-The CI workflow repeats only the public-content check. Its presence does not establish that remote CI has run.
+## Updating results
 
-## If measurement summaries are published later
-
-Any summary should undergo a separate disclosure review and explain:
-
-- The outcome measured and its definition.
-- Sample selection, omitted samples, and applicability.
-- Observed outcomes versus design goals.
-- Uncovered conditions, negative results, and uncertainty.
-- Whether evidence still applies to the version discussed.
-
-Passing tests does not imply absence of defects. Limited samples should not become promises of universal fills, no duplicates, or returns. This edition does not publish production measurement data.
-
-## Acceptance criteria for this edition
-
-Chinese and English agree; images, text, and JSON identify synthetic material; unresolved results remain unresolved; relative resources open; interface outlines are excluded; the archive matches its inventory. These checks concern public-content quality and disclosure boundaries.
+Update both languages, [results.json](../../benchmarks/results.json), and the [performance figure](../../assets/performance.svg) together. Keep definitions stable; when boundaries or populations change, publish separate results rather than merge incompatible data. Retain raw evidence privately and publish sanitized statistics, definitions, and scope.

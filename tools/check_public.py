@@ -26,6 +26,7 @@ import xml.etree.ElementTree as ET
 
 
 MANIFEST = "public-files.txt"
+MEASURED_RESULTS = "benchmarks/results.json"
 MAX_FILE_BYTES = 5 * 1024 * 1024
 TEXT_SUFFIXES = {".md", ".txt", ".json", ".svg", ".py", ".yml", ".yaml", ".html"}
 TEXT_NAMES = {"LICENSE", ".gitignore", ".gitattributes"}
@@ -253,11 +254,80 @@ def reject_json_constant(value: str) -> None:
     raise ValueError("non-finite JSON number")
 
 
+def inspect_measured_aggregate(name: str, data: dict[str, object], errors: list[str]) -> None:
+    """Check public result metadata without claiming to reproduce a measurement."""
+    if type(data.get("schema_version")) is not int or data["schema_version"] != 1:
+        errors.append(f"{name}: measured aggregates require schema_version=1")
+    if data.get("verification_basis") != "historical_project_records":
+        errors.append(f"{name}: verification_basis must be 'historical_project_records'")
+    if not isinstance(data.get("period"), str) or not data["period"].strip():
+        errors.append(f"{name}: period must be a nonempty historical-period string")
+    top_fields = {"schema_version", "data_classification", "verification_basis", "period", "records"}
+    for key, value in data.items():
+        if key not in top_fields and (not isinstance(value, str) or not value.strip()):
+            errors.append(f"{name}: additional aggregate provenance fields must be nonempty strings")
+    records = data.get("records")
+    if not isinstance(records, list) or not records:
+        errors.append(f"{name}: records must be a nonempty array")
+        return
+    evidence_kinds = {
+        "live_observation", "simulated_burst", "configuration_limit",
+        "live_data_dry_run", "live_run_summary", "mainnet_shadow_test",
+    }
+    record_fields = {
+        "result_id", "evidence_kind", "version_scope", "metric", "unit",
+        "measurement_boundary", "sample_count", "values", "conditions", "limitations",
+    }
+    for number, record in enumerate(records, 1):
+        location = f"{name}: record {number}"
+        if not isinstance(record, dict):
+            errors.append(f"{location}: expected a measurement object")
+            continue
+        if set(record) - record_fields:
+            errors.append(f"{location}: unsupported measurement field")
+        result_id = record.get("result_id")
+        if not isinstance(result_id, str) or re.fullmatch(r"PERF-[A-Z0-9-]+", result_id) is None:
+            errors.append(f"{location}: result_id must use the public PERF identifier family")
+        evidence_kind = record.get("evidence_kind")
+        if not isinstance(evidence_kind, str) or evidence_kind not in evidence_kinds:
+            errors.append(f"{location}: unsupported evidence_kind")
+        version_scope = record.get("version_scope")
+        if not isinstance(version_scope, str) or version_scope not in {"historical_record", "supplied_configuration"}:
+            errors.append(f"{location}: unsupported version_scope")
+        for key in ("metric", "unit", "measurement_boundary"):
+            value = record.get(key)
+            if not isinstance(value, str) or not value.strip():
+                errors.append(f"{location}: {key} must be a nonempty string")
+        if "sample_count" in record:
+            count = record["sample_count"]
+            if type(count) is not int or count <= 0:
+                errors.append(f"{location}: sample_count must be a positive integer when present")
+        values = record.get("values")
+        if not isinstance(values, dict) or not values:
+            errors.append(f"{location}: values must be a nonempty object")
+        else:
+            for value in values.values():
+                if type(value) not in {int, float, str}:
+                    errors.append(f"{location}: values must contain only numbers or strings")
+                elif isinstance(value, float) and not math.isfinite(value):
+                    errors.append(f"{location}: non-finite decoded JSON number is forbidden")
+        for key in ("conditions", "limitations"):
+            value = record.get(key)
+            if not isinstance(value, list) or not value or any(not isinstance(item, str) or not item.strip() for item in value):
+                errors.append(f"{location}: {key} must be a nonempty array of nonempty strings")
+
+
 def inspect_json(name: str, text: str, errors: list[str]) -> None:
     try:
         data = json.loads(text, object_pairs_hook=unique_json_object, parse_constant=reject_json_constant)
     except (ValueError, RecursionError):
         errors.append(f"{name}: invalid JSON, duplicate keys, or non-finite number")
+        return
+    if name == MEASURED_RESULTS:
+        if not isinstance(data, dict) or data.get("data_classification") != "measured_aggregate":
+            errors.append(f"{name}: JSON must be an object labelled data_classification='measured_aggregate'")
+            return
+        inspect_measured_aggregate(name, data, errors)
         return
     if not isinstance(data, dict) or data.get("data_classification") != "synthetic":
         errors.append(f"{name}: JSON must be an object labelled data_classification='synthetic'")
@@ -592,6 +662,39 @@ def run_self_test() -> int:
         expect("duplicate JSON key", "duplicate keys")
         install({"examples/demo.json": '{"data_classification":"synthetic","value":1e999}'})
         expect("decoded non-finite JSON number", "non-finite decoded JSON")
+        aggregate_record = {
+            "result_id": "PERF-CHECK", "evidence_kind": "simulated_burst",
+            "version_scope": "historical_record", "metric": "validator_fixture",
+            "unit": "fixture_units", "measurement_boundary": "Validator fixture boundary only",
+            "sample_count": 1, "values": {"fixture_value": 1},
+            "conditions": ["Self-test fixture only"],
+            "limitations": ["No project performance claim"],
+        }
+        aggregate = {
+            "schema_version": 1, "data_classification": "measured_aggregate",
+            "verification_basis": "historical_project_records", "period": "2026-11",
+            "provenance_en": "Validator fixture only", "provenance_zh": "仅用于检查器自测",
+            "records": [aggregate_record],
+        }
+        install({MEASURED_RESULTS: json.dumps(aggregate)})
+        expect("valid measured aggregate", None)
+        install({MEASURED_RESULTS: json.dumps(dict(aggregate, records=[{
+            key: value for key, value in aggregate_record.items() if key != "sample_count"
+        }]))})
+        expect("aggregate with unrecorded sample count", None)
+        install({"examples/demo.json": json.dumps(aggregate)})
+        expect("measured aggregate at wrong path", "data_classification")
+        install({MEASURED_RESULTS: base["examples/demo.json"]})
+        expect("synthetic classification cannot bypass aggregate checks", "data_classification")
+        install({MEASURED_RESULTS: json.dumps(dict(aggregate, records=[{
+            key: value for key, value in aggregate_record.items() if key != "measurement_boundary"
+        }]))})
+        expect("missing aggregate measurement boundary", "measurement_boundary")
+        install({MEASURED_RESULTS: json.dumps(dict(aggregate, records=[dict(aggregate_record, sample_count=0)]))})
+        expect("invalid aggregate sample count", "sample_count")
+        nonfinite_aggregate = dict(aggregate, records=[dict(aggregate_record, values={"fixture_value": float("inf")})])
+        install({MEASURED_RESULTS: json.dumps(nonfinite_aggregate).replace("Infinity", "1e999")})
+        expect("non-finite aggregate result", "non-finite decoded JSON")
         install({"notes.txt": b"a" + bytes([0]) + b"b"})
         expect("binary content", "binary control")
         install({"notes.txt": bytes.fromhex("504b0304") + b"archive"})

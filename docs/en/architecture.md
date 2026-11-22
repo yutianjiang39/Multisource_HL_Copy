@@ -1,40 +1,37 @@
-# Overview: responsibilities from an operator's perspective
+# System overview
 
-[中文](../overview.md) · [Home](../../README.en.md)
+[中文](../overview.md) · [Performance](performance.md) · [Home](../../README.en.md)
 
-![Sources, execution concerns, and operational visibility. A concept illustration.](../../assets/overview.svg)
+Multisource HL Copy uses an event-driven Rust core for real-time execution and Python for control, configuration, and reporting. Public architecture describes responsibilities and trade-offs without exposing internal interfaces, execution algorithms, or recovery state machines.
 
-This page describes product responsibilities. Its groups do not correspond to production modules, deployment units, threads, databases, or communication links, and imply no internal execution order.
+## High-level responsibilities
 
-## Four areas of attention
-
-| Area | Operator question | Information that may be presented |
+| Area | Responsibility | Engineering value |
 | --- | --- | --- |
-| Sources | Which sources are observed, and what changed? | Anonymous labels, summarized activity, and observation status |
-| Execution | What happened on this side, and what is unknown? | Qualitative order and position states, outcome notes, and unresolved items |
-| Operations and risk | What is in scope, and what needs attention? | Scope notes, operation records, risk descriptions, and review items |
-| Reporting | What changed, and what comes next? | Source summaries, state changes, open questions, and evidence notes |
+| Control and configuration | Operator entry points, effective settings, start/stop, and source changes | Make scope and changes understandable |
+| Real-time execution | Source events, order lifecycle, and position-related actions | Focus on local overhead and execution consistency |
+| Risk and state | Risk evaluation, state records, intervention outcomes, and unresolved facts | Keep operational uncertainty visible |
+| Reporting and traceability | Event notices, periodic summaries, and operational records | Support review and investigation |
 
-The project uses Rust and Python. This showcase retains only that high-level information, without a module inventory, interface outline, call graph, or runtime path.
+The Rust/Python division is public technical context. Modules, internal protocols, queues, persistence sequencing, and scheduling rules remain private.
 
-## Distinctions that matter
+## Evidence for design goals
 
-**Source intent and execution outcome.** A source creating, changing, or ending an order is an observation. Whether the execution side places or fills an order, and whether risk remains, are separate facts.
-
-**State descriptions and safety guarantees.** Labels such as “needs attention” and “awaiting confirmation” communicate information. They do not establish that a risk has been resolved. Completion needs appropriate evidence; this package supplies no production evidence.
-
-**The scope of a view and the whole account.** A card may cover only one scenario or object. Local results should not be presented as proof that all account risk is cleared.
-
-**Reports and decisions.** A report can organize known facts and open questions. A polished presentation does not establish profitability or make trading decisions for an operator.
-
-## Product trade-offs
-
-| Concern | What should be clear | Disclosure boundary |
+| Concern | Public evidence | Reading guide |
 | --- | --- | --- |
-| Multiple sources | Separate source observations from execution results | No allocation, conflict-resolution, or sizing rules |
-| Uncertainty | Make unresolved facts visible | No recovery, retry, or scheduling recipes |
-| Explainability | Provide context and useful review items | No real logs, internal fields, or individual trade evidence |
-| Operations | Explain intent, scope, and observable results | No production commands, permissions, or deployment steps |
-| Credible verification | Separate descriptions, illustrations, and evidence | Repository checks do not validate the trading engine |
+| Local overhead | 43 ms local-submission p99 across 1,765 mainnet order samples | Local latency in the performance page |
+| Burst handling | Aggregate 150/s across two sources, three five-second bursts, repeated simulated acceptance | Workload conditions |
+| Multiple sources | Eight configurable targets, five-target rehearsal, three-target live summary | Scale and evidence levels |
+| An operational workflow | Orders, positions, risk intervention, control, and reporting | Capabilities and scenarios |
 
-Continue with [Capabilities](features.md), [Scenarios](showcase.md), and [Evidence & limits](testing.md).
+Measurements describe historical conditions and do not turn one local metric into an end-to-end guarantee. Units, samples, and boundaries are in [Performance](performance.md).
+
+## The operator's view
+
+![Sources, execution concerns, and operational visibility. A synthetic concept illustration.](../../assets/overview.svg)
+
+The source view describes intent changes; the execution view describes observed outcomes; risk and reporting views identify facts needing attention. The figure illustrates information relationships, not production modules or scheduling order.
+
+Source intent and follower fills, local state and whole-account risk, request submission and final outcomes should remain distinct. This makes capabilities understandable without hiding uncertainty.
+
+Continue with [Capabilities](features.md), [Performance](performance.md), and [Scenarios](showcase.md).

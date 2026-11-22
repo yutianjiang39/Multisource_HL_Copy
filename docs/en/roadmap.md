@@ -9,6 +9,7 @@ This page describes ways the public showcase materials could improve. It is not 
 | Material | Purpose |
 |---|---|
 | Chinese and English documentation | Introduce the product context, capability scope, and limitations |
+| Performance and scale summaries | Local p99, short-burst handling, and layered target-count evidence |
 | Conceptual overview and scenario illustrations | Help visitors understand information relationships |
 | Synthetic scenario, report, and event data | Provide readable fictional examples for documentation discussions |
 | Public-scope and verification notes | Distinguish presentation content from facts requiring separate evidence |
@@ -32,7 +33,7 @@ Keep illustrations, scenario prose, and synthetic data aligned. Add field explan
 
 ### 4. Clearer evidence labels
 
-Continue distinguishing capability descriptions, conceptual illustrations, and synthetic examples. Any future verifiable public statement should identify its scope and basis. Fictional numbers must not fill gaps in evidence.
+Continue updating [Performance](performance.md), prioritizing current-build p95/p99, sustained throughput, eight active targets, peak backlog, and anonymous hardware classes. Keep measurements, configuration ceilings, and synthetic scenarios distinct; do not invent missing results.
 
 ### 5. Accessibility and reading experience
 

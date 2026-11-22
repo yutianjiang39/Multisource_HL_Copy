@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "data_classification": "measured_aggregate",
+  "verification_basis": "historical_project_records",
+  "period": "2026-11",
+  "provenance_note": "Compiled from retained project runtime/test summaries and supplied configuration validation. Results and necessary measurement conditions only; no raw events, identities, commit hashes, or operational configuration.",
+  "records": [
+    {
+      "evidence_kind": "live_observation",
+      "version_scope": "historical_record",
+      "unit": "ms",
+      "conditions": [
+        "Historical mainnet order observations pooled across multiple runtime sessions.",
+        "Only orders with an exchange-side order identifier, a selected session, and the required timestamp pair enter the latency sample."
+      ],
+      "limitations": [
+        "This is a retained historical aggregate, not a fresh benchmark of the latest code.",
+        "The sample excludes skipped, rejected-before-observation, and unsubmitted signals; it does not measure all incoming signals.",
+        "Segment quantiles must not be added to invent an end-to-end percentile."
+      ],
+      "result_id": "PERF-LIVE-LOCAL",
+      "metric": "local_submission_latency",
+      "measurement_boundary": "Signal receipt on the local host to the recorded order-submission timestamp; excludes upstream delivery, physical socket-send verification, exchange acknowledgement and fills.",
+      "sample_count": 1765,
+      "values": {
+        "min": 11,
+        "p50": 24,
+        "p90": 30,
+        "p99": 43,
+        "max": 151
+      }
+    },
+    {
+      "evidence_kind": "live_observation",
+      "version_scope": "historical_record",
+      "unit": "ms",
+      "conditions": [
+        "Historical mainnet observations pooled across multiple sessions.",
+        "The signal-delivery sample differs from the submitted-order latency sample."
+      ],
+      "limitations": [
+        "This is a retained historical aggregate, not a fresh benchmark of the latest code.",
+        "Selected-session observations with source-event and receipt timestamps; this cohort can include signals that did not result in a follower order and is not the full incoming event stream.",
+        "Segment quantiles must not be added to invent an end-to-end percentile."
+      ],
+      "result_id": "PERF-LIVE-FEED",
+      "metric": "upstream_signal_delivery_latency",
+      "measurement_boundary": "Source order inclusion in a block to signal receipt by the follower.",
+      "sample_count": 3734,
+      "values": {
+        "p50": 203,
+        "p90": 277,
+        "p99": 312
+      }
+    },
+    {
+      "evidence_kind": "live_observation",
+      "version_scope": "historical_record",
+      "unit": "ms",
+      "conditions": [
+        "Historical mainnet order observations pooled across multiple runtime sessions.",
+        "Only orders with an exchange-side order identifier, a selected session, and the required timestamp pair enter the latency sample."
+      ],
+      "limitations": [
+        "This is a retained historical aggregate, not a fresh benchmark of the latest code.",
+        "The sample excludes skipped, rejected-before-observation, and unsubmitted signals; it does not measure all incoming signals.",
+        "Segment quantiles must not be added to invent an end-to-end percentile."
+      ],
+      "result_id": "PERF-LIVE-INCLUSION",
+      "metric": "order_submission_to_block_inclusion",
+      "measurement_boundary": "Recorded local order-submission timestamp to inclusion of the follower order in a block; not execution fill latency.",
+      "sample_count": 1765,
+      "values": {
+        "p50": 576,
+        "p90": 791,
+        "p99": 1327
+      }
+    },
+    {
+      "evidence_kind": "live_observation",
+      "version_scope": "historical_record",
+      "unit": "ms",
+      "conditions": [
+        "Historical mainnet order observations pooled across multiple runtime sessions.",
+        "Only orders with an exchange-side order identifier, a selected session, and the required timestamp pair enter the latency sample.",
+        "Only follower orders canceled in response to source cancellation, with matched local request and exchange cancellation timestamps."
+      ],
+      "limitations": [
+        "This is a retained historical aggregate, not a fresh benchmark of the latest code.",
+        "The sample excludes skipped, rejected-before-observation, and unsubmitted signals; it does not measure all incoming signals.",
+        "Segment quantiles must not be added to invent an end-to-end percentile."
+      ],
+      "result_id": "PERF-LIVE-CANCEL",
+      "metric": "cancellation_submission_to_block_inclusion",
+      "measurement_boundary": "Source-triggered follower cancellation request timestamp to cancellation inclusion in a block.",
+      "sample_count": 1509,
+      "values": {
+        "p50": 498,
+        "p90": 564,
+        "p99": 650
+      }
+    },
+    {
+      "result_id": "PERF-BURST-TWO",
+      "evidence_kind": "simulated_burst",
+      "version_scope": "historical_record",
+      "metric": "two_source_burst_dispatch",
+      "unit": "signals/s",
+      "measurement_boundary": "Offered new-order signals from two simulated sources; dispatch matching means the simulator received the corresponding first order request, not an acknowledgement or fill.",
+      "sample_count": 10,
+      "values": {
+        "aggregate_offered_rate": 150,
+        "source_count": 2,
+        "offered_rate_per_source": 75,
+        "burst_duration_seconds": 5,
+        "bursts_per_run": 3,
+        "gap_seconds": 5,
+        "runs": 10,
+        "dispatch_match_percent": 100,
+        "simulated_429_count": 0,
+        "per_run_p99_min_ms": 139,
+        "per_run_p99_max_ms": 186
+      },
+      "conditions": [
+        "Two simulated sources with distinct instruments; ten seeded runs.",
+        "Three five-second bursts per run, with five-second gaps.",
+        "The latency range is the minimum and maximum of the ten per-run p99s, not a pooled percentile.",
+        "Latency starts at simulated signal broadcast after modeled push delay and ends at simulator receipt of the matching order request."
+      ],
+      "limitations": [
+        "Historical simulator acceptance result, not live exchange order throughput or sustained capacity.",
+        "100% dispatch matching does not mean 100% accepted or filled orders.",
+        "Higher offered load encountered order-cap rejections and longer latency; those runs are excluded from the passed-load claim.",
+        "Different longer-window workloads did not establish complete dispatch at sustained 150 signals/s."
+      ]
+    },
+    {
+      "result_id": "PERF-TARGET-CONFIG",
+      "evidence_kind": "configuration_limit",
+      "version_scope": "supplied_configuration",
+      "metric": "maximum_configurable_followed_targets",
+      "unit": "targets",
+      "measurement_boundary": "Total normalized unique followed targets in one configuration, including the primary target.",
+      "values": {
+        "maximum_configurable_targets": 8
+      },
+      "conditions": [
+        "Verified against the supplied configuration validation."
+      ],
+      "limitations": [
+        "Configuration ceiling only; not a measured eight-target full-load capacity or system saturation point."
+      ]
+    },
+    {
+      "result_id": "PERF-TARGET-DRYRUN",
+      "evidence_kind": "live_data_dry_run",
+      "version_scope": "historical_record",
+      "metric": "live_data_dry_run_target_count",
+      "unit": "targets",
+      "measurement_boundary": "Configured targets in a mainnet-data rehearsal with simulated follower-side execution.",
+      "values": {
+        "targets": 5,
+        "approximate_duration_minutes": 5
+      },
+      "conditions": [
+        "One recorded five-target rehearsal using live source data and simulated follower execution."
+      ],
+      "limitations": [
+        "Not all sources were simultaneously active at full load.",
+        "This is not a five-target live execution benchmark or a sustained-load test."
+      ]
+    },
+    {
+      "result_id": "PERF-TARGET-LIVE",
+      "evidence_kind": "live_run_summary",
+      "version_scope": "historical_record",
+      "metric": "simultaneously_followed_live_targets",
+      "unit": "targets",
+      "measurement_boundary": "Sources followed within one recorded mainnet execution session.",
+      "values": {
+        "targets": 3,
+        "approximate_duration_minutes": 80
+      },
+      "conditions": [
+        "Historical small-account mainnet run reported in the project's retained aggregate summary."
+      ],
+      "limitations": [
+        "Only the aggregate summary is retained here; raw session evidence is not distributed.",
+        "Not a maximum-capacity measurement, long-run availability guarantee, or independent verification of every per-source setting."
+      ]
+    },
+    {
+      "result_id": "PERF-SHADOW-PLACE",
+      "evidence_kind": "mainnet_shadow_test",
+      "version_scope": "historical_record",
+      "metric": "source_to_follower_order_inclusion",
+      "unit": "ms",
+      "measurement_boundary": "Source order becomes effective to follower order becomes effective, using exchange timestamps at both endpoints.",
+      "sample_count": 73,
+      "values": {
+        "p50": 809
+      },
+      "conditions": [
+        "Script-controlled source, one followed target, small-account mainnet test.",
+        "Measured in one roughly five-minute test round."
+      ],
+      "limitations": [
+        "Historical limited sample; no end-to-end p99 is retained.",
+        "Order effectiveness is not proof of a fill."
+      ]
+    },
+    {
+      "result_id": "PERF-SHADOW-CANCEL",
+      "evidence_kind": "mainnet_shadow_test",
+      "version_scope": "historical_record",
+      "metric": "source_to_follower_cancellation_inclusion",
+      "unit": "ms",
+      "measurement_boundary": "Source cancellation becomes effective to follower cancellation becomes effective, using exchange timestamps at both endpoints.",
+      "sample_count": 69,
+      "values": {
+        "p50": 666
+      },
+      "conditions": [
+        "Same scripted-source mainnet round as the order-effectiveness summary, with a separate cancellation sample."
+      ],
+      "limitations": [
+        "Historical limited sample; no end-to-end p99 is retained.",
+        "The cancellation sample count differs from the placement sample count."
+      ]
+    }
+  ],
+  "provenance_note_zh": "从项目保留的历史运行、测试汇总及所提供配置校验中整理。仅公开结果与必要测量条件；未附逐笔记录、身份、代码版本散列或测试配置。"
+}

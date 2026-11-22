@@ -6,7 +6,7 @@
 
 ### What is this repository?
 
-It is the public showcase package for Multisource HL Copy, describing the problems the product addresses, how capabilities are presented, and the reading experience. It contains documentation, conceptual illustrations, and static synthetic examples. Its scope differs from the private production implementation; see [PUBLIC_SCOPE.md](../../PUBLIC_SCOPE.md).
+It is the public results showcase for Multisource HL Copy, presenting coordination across sources alongside documented historical performance and validation aggregates. It includes documentation, performance charts, concept illustrations, and static synthetic examples. See [Public scope](public-scope.md) for the boundary between result evidence and the private production implementation.
 
 ### Can I start trading after downloading it?
 
@@ -14,17 +14,17 @@ No. The repository has no trading runtime, account integration, key configuratio
 
 ### Why describe capabilities without publishing the implementation?
 
-Capability descriptions help visitors understand use cases, observable outcomes, and product trade-offs without exposing execution algorithms, specific parameters, or operating environments. Readers can discuss whether those descriptions are complete. They cannot establish from the descriptions alone that the private system implements or has verified the capabilities.
+Capability descriptions explain use cases and product trade-offs; historical measurement aggregates show observable engineering results. Latency, burst throughput, concurrent-source counts, and test coverage can be published with the context needed to interpret them while algorithms, operating parameters, and production configuration remain private. Each result applies to its documented version and scope.
 
 ### Does a public repository mean that all materials can be used without restriction?
 
 Usage depends on the applicable license, not on whether materials are publicly accessible. Read the root [LICENSE](../../LICENSE) and the historical-license notes it references. Showcase materials do not grant access to private code or services.
 
-## About illustrations and synthetic data
+## About measurements, illustrations, and synthetic scenarios
 
 ### Are the examples real logs with names changed?
 
-No. The situations, sources, assets, states, and values in this showcase were constructed to explain concepts. They are not renamed real logs or anonymized exports from real accounts. They are explicitly marked **SIMULATED / 合成示例**.
+The scenarios under `examples/` are not. They are authored from scratch using fictional sources, assets, states, and example values, marked **SIMULATED / 合成示例**, and declare `data_classification: synthetic` in their JSON. The separately published [measurement aggregates](../../benchmarks/results.json) derive from documented historical measurements and are classified as `measured_aggregate`. They are not synthetic scenarios and do not include raw event traces.
 
 ### Do SOURCE_A or ASSET_X map to real accounts or assets?
 
@@ -32,25 +32,33 @@ No. They are fictional labels without mappings to real wallets, accounts, market
 
 ### Are the images actual administration screens?
 
-No. They are explanatory illustrations created for the public introduction, showing processes and information relationships. They do not establish that a corresponding web console exists or that the depicted states come from a running service.
+Concept illustrations explain scenarios and information relationships; they are not screenshots of actual administration screens. The [performance chart](../../assets/performance.svg) visualizes published measurement aggregates, with evidence and definitions in [Performance and validation](performance.md). Each image takes its meaning from its data and caption; neither synthetic data nor a live interface is a blanket description of all figures.
 
 ### Is the JSON a production API, configuration template, or importable strategy?
 
-No. The [scenario](../../examples/scenario.json), [report](../../examples/report.json), and [risk event](../../examples/risk-event.json) are reading materials. Their field names and structures do not promise compatibility with a production interface, and they are not executable configuration or strategy rules.
+No. The [scenario](../../examples/scenario.json), [report](../../examples/report.json), and [risk event](../../examples/risk-event.json) are synthetic reading materials; the [measurement aggregates](../../benchmarks/results.json) store publishable historical metrics. Both classes of JSON are documentation data, not production APIs, executable configuration, or strategy rules.
 
 ### Can example values be used to compare performance or returns?
 
-No. Synthetic values serve presentation and readability without a real measurement basis. They cannot establish actual following quality, latency, availability, returns, or risk, and cannot support selecting real trading sources.
+Synthetic values under `examples/` cannot. They explain scenarios without a real measurement basis. Performance analysis should use results classified as `measured_aggregate` together with their measurement boundaries, historical attribution, and known limitations. Those engineering metrics do not themselves measure returns.
 
 ## About capabilities and evidence
 
 ### Does the feature page prove which capabilities are live?
 
-No. [Features](features.md) contains capability descriptions; illustrations and examples demonstrate presentation. Establishing whether private features are implemented, deployed, or live-verified requires separate evidence tied to a specific version, environment, and evaluation scope.
+[Features](features.md) alone describes capabilities. [Performance and validation](performance.md) supplies documented result evidence for the historical scope it explicitly identifies. Historical measurements do not automatically establish that all current-release features are live or have been revalidated.
 
-### Why are production test counts and performance benchmarks absent?
+### What information can public benchmarks contain?
 
-The current public package does not provide them. **Omission neither disproves them nor verifies them through this package.** Whatever conclusion someone reaches about earlier figures, current synthetic examples cannot replace the original evidence. See [Verification scope](testing.md) for the boundaries of public evidence.
+They can contain documented latency percentiles, burst signal throughput, tested concurrent-source counts, test categories, and aggregate counts. Anonymized environment classes, generic measurement start and end boundaries, sample sizes, duration, tested-target counts, and error or drop rates are also publishable. This context helps readers assess where a result applies. Missing records should be acknowledged, never invented. See the [benchmark data guide](../../benchmarks/README.md) and [Verification scope](testing.md).
+
+### How should I interpret p99, burst throughput, and source counts?
+
+p99 must come from the corresponding record; it cannot be inferred from p50 or a mean. Burst throughput in signals/s needs a defined processing layer and measurement window; it is not exchange orders or fills per second. A tested concurrent-source count describes the sources covered by that test, not an automatic maximum. Tested targets, sources, and statistical samples are also different counting units.
+
+### Are these numbers from the latest release?
+
+Use the historical period, version, and validation scope attached to each result. This package preserves the historical status of historical measurements; a documentation update is not an engine retest. New measurements should add or explicitly update the corresponding records with clear version attribution.
 
 ### What does the public check script validate?
 
@@ -60,7 +68,7 @@ From the repository root, using Python 3.10 or later, run:
 python3 tools/check_public.py
 ```
 
-The script checks the public showcase package itself; its contents define the specific checks. It is not a trading-engine test, backtest, live experiment, or security audit. Passing it does not establish correct trade execution, credential safety, effective risk controls, or real report values.
+The script checks public files, classifications, references, and disclosure rules; its contents define the specific checks. It helps keep materials consistent. It does not rerun the trading engine or historical measurements, and it does not replace an independent audit.
 
 ### If a risk example says an issue was addressed, does that establish that real risk was removed?
 
@@ -74,7 +82,7 @@ No. Updating current files does not automatically rewrite Git history, existing 
 
 ### What contributions are welcome?
 
-Improvements to documentation, translation, illustration readability, and entirely fictional scenarios are welcome. Contributions should help visitors understand capabilities and limitations without adding production implementations, real configuration, addresses, account records, or logs. See [CONTRIBUTING.md](../../CONTRIBUTING.md).
+Improvements to documentation, translation, charts, and synthetic scenarios are welcome, as are documented, sanitized measurement aggregates within the public boundary. Measurements should state their definitions and historical attribution; synthetic scenarios should retain their classification. Do not include production implementations, real configuration, addresses, account records, or logs. See [CONTRIBUTING.md](../../CONTRIBUTING.md).
 
 ### Can I post my logs in a public discussion to demonstrate an issue?
 
@@ -84,4 +92,4 @@ Do not submit real logs, account screenshots, credentials, or records identifyin
 
 Follow [SECURITY.md](../../SECURITY.md). Use private vulnerability reporting only if the repository actually has that feature enabled. Otherwise, first request a private communication channel without posting secrets or their detailed locations in public. This repository does not invent a contact email or reporting service.
 
-Related reading: [Scenario guide](showcase.md) · [Features](features.md) · [Public showcase roadmap](roadmap.md).
+Related reading: [Performance and validation](performance.md) · [Scenario guide](showcase.md) · [Features](features.md) · [Public showcase roadmap](roadmap.md).

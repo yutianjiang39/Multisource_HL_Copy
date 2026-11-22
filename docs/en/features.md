@@ -2,9 +2,9 @@
 
 [中文](../features.md) · [Project home](../../README.en.md) · [Scenario guide](showcase.md) · [FAQ](faq.md)
 
-This page describes product capabilities, use cases, and observable outcomes. **These are capability descriptions, not implementation, deployment, or live-operation claims verified by this repository.** The repository contains documentation, conceptual illustrations, and synthetic data. It does not include a trading system that connects to accounts, receives live market data, or submits orders.
+The system covers multi-source order following, position changes, risk intervention, operational control, and reporting. This page describes capabilities, operator value, and engineering boundaries. Recorded latency, load, and target scale are in [Performance](performance.md). Production code remains private; this public package contains capability descriptions, measurement summaries, and experience examples.
 
-Illustrations and examples are marked **SIMULATED / 合成示例**. Their sources, assets, states, and values are entirely fictional; the illustrative screens are not production screenshots. See [PUBLIC_SCOPE.md](../../PUBLIC_SCOPE.md) for publication boundaries and [Verification scope](testing.md) for how to read the evidence.
+The scenario figures and examples/ data used on this page are marked **SIMULATED / 合成示例**. The benchmarks/ directory separately contains real aggregate measurements. The two classes are not interchangeable, and scenario illustrations are not production screenshots. See [PUBLIC_SCOPE.md](../../PUBLIC_SCOPE.md) for publication boundaries and [Verification scope](testing.md) for how to read the evidence.
 
 ## Capability overview
 
@@ -20,6 +20,10 @@ Illustrations and examples are marked **SIMULATED / 合成示例**. Their source
 | Traceable explanations | How can a reader move from a summary to its relevant context? | Source labels, scenario descriptions, and event notes |
 
 These materials demonstrate how information can be presented. They are not an operational console or a running feature demonstration.
+
+## Published performance and scale
+
+Local-submission p99 is **43 ms** across 1,765 mainnet order samples. A two-source simulated burst gate used **150 signals/s aggregate**. One configuration accepts up to **8 targets**, with separate records of **3 live targets and 5 rehearsal targets**. See [Performance](performance.md) for each measurement and its limits.
 
 ## 1. Multiple-source organization
 
@@ -113,9 +117,9 @@ These materials demonstrate how information can be presented. They are not an op
 
 | Can be evaluated from this repository | Cannot be evaluated from this repository alone |
 |---|---|
-| Clarity and consistency of product descriptions | Whether private features are implemented, deployed, or live-verified |
+| Clarity and consistency of capabilities and measurement summaries | Independently auditing private implementation or rerunning its tests |
 | Whether sources, events, and outcomes are easy to distinguish | Correctness of multiple-source execution or sizing |
-| Whether examples disclose their synthetic nature and limits | Real execution speed, following quality, or long-term availability |
+| Recorded percentiles, workload windows, and target scales | Execution speed or long-term availability in unmeasured conditions or the current build |
 | Readability of risk notices and attention items | Whether risk controls limit real losses |
 | Alignment of Chinese, English, illustrations, and data | Profitability under any market conditions |
 

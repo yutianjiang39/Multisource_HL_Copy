@@ -4,6 +4,16 @@
 
 These notes concern presentation materials only, not private versions, deployments, or fixes.
 
+## Showcase v1.3 — 2026-11-22
+
+- 首页以性能与系统优势为主线，加入真实历史指标卡与中英文性能页。
+- 公开本地提交 p99、短脉冲负载、目标配置上限、实盘与演练规模，以及主网端到端中位数。
+- 为各数字标注样本、计时边界、模拟或主网类型，区分已测规模与配置支持。
+- 新增 benchmarks/results.json，将 measured_aggregate 与 synthetic 示例分开管理。
+- 披露策略允许结果和必要测试条件，继续保护实现、身份、原始交易与部署信息。
+
+English: shifted the showcase toward measured strengths; added bilingual performance pages, result cards, and historical aggregate data; separated local latency, simulated bursts, configuration limits, and observed target scales; retained implementation and identity privacy.
+
 ## Showcase v1.2 — 2026-11-22
 
 - 重写中英文首页、功能说明、职责概览与场景导览，补齐 FAQ 和公开材料路线图。

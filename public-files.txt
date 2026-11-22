@@ -17,11 +17,15 @@ REMOVED_FILES.txt
 SECURITY.md
 assets/follow_flow.svg
 assets/overview.svg
+assets/performance.svg
 assets/report.svg
 assets/risk_event.svg
+benchmarks/README.md
+benchmarks/results.json
 docs/en/architecture.md
 docs/en/faq.md
 docs/en/features.md
+docs/en/performance.md
 docs/en/public-scope.md
 docs/en/roadmap.md
 docs/en/showcase.md
@@ -30,6 +34,7 @@ docs/faq.md
 docs/features.md
 docs/maintaining-public.md
 docs/overview.md
+docs/performance.md
 docs/roadmap.md
 docs/showcase.md
 docs/testing.md
