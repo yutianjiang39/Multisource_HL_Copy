@@ -1,2 +1,24 @@
+# Local caches and generated files
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+
+# Data, credentials and archives do not belong in the public tree
+.env
+.env.*
+*.log
+*.jsonl
+*.db
+*.sqlite
+*.sqlite3
+*.pem
+*.key
+*.p12
+*.pfx
+*.zip
+*.tar
+*.gz
