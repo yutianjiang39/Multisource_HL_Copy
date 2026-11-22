@@ -1,36 +1,48 @@
-This repository is a showcase. It uses two licenses:
-
-1. Documentation and images (README.md, PUBLIC_SCOPE.md, docs/, assets/)
-   are licensed under the Creative Commons Attribution 4.0 International
-   License (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/legalcode
-
-   Attribution: "Multisource HL Copy, by yutianjiang"
-
-2. Outline code (outline/) is licensed under the MIT License below.
-
-The production implementation of the system is kept in a private repository
-and is not covered by either license.
-
--------------------------------------------------------------------------------
-
-MIT License
-
+Multisource HL Copy — Public Showcase Rights Notice
 Copyright (c) 2026 yutianjiang
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. New original material in this edition
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+All rights are reserved in newly added original expression and utilities in
+this edition to the extent those rights have not already been licensed.
+You may read this showcase and run the included local validation and packaging
+utilities to evaluate these materials. No general license to redistribute,
+commercialize, modify, sublicense, or incorporate this new original material
+into another product is granted by this notice. Additional permission must
+come from the applicable rights holder.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. Earlier permissions remain in effect
+
+Earlier editions used CC BY 4.0 for documentation and illustrations and MIT
+for the former outline code. The exact earlier notice and attribution are
+preserved in LICENSES/LEGACY_LICENSE.txt.
+
+This notice does not revoke, narrow, or replace rights previously granted
+under those licenses. Previously licensed material, including any portion
+retained or reused in this edition, remains available under its applicable
+earlier license. Merely rewriting, adapting, or moving such material does not
+erase existing rights in the previously licensed portions. Third-party
+materials retain their respective rights and notices.
+
+3. Public access and production implementation
+
+This is a public showcase, not an open-source release of the trading system.
+The private production implementation is not included or licensed here.
+This notice does not restrict rights granted by the hosting platform's
+applicable terms, including permitted viewing or forking, or uses allowed
+by applicable law.
+
+4. No performance promise
+
+These materials and local utilities are supplied as-is, without warranties
+to the extent permitted by applicable law. Illustrations and examples are
+synthetic and provide no assurance of trading performance, profitability,
+execution, recovery, or risk-control outcomes.
+
+中文说明：
+本版仅对未曾授予许可的新增原创表达与工具保留权利；允许阅读本展示及运行
+随附的本地检查、打包工具以评估展示材料，不据此授予一般转载、商业利用、
+改编或并入其他产品的许可。旧版已授予的 CC BY 4.0 / MIT 权利继续适用于
+相应材料，包括本版沿用的受许可部分；本通知不追溯撤销或缩减这些权利。
+平台条款允许的浏览、分叉及法律允许的使用不受本通知排除。
+生产交易实现不在本包或本通知授权范围内。合成示例不构成交易效果保证。
