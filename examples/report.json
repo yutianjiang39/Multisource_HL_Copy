@@ -1,0 +1,60 @@
+{
+  "data_classification": "synthetic",
+  "display_type": "illustration_only",
+  "label": "SIMULATED / 合成示例",
+  "notice": {
+    "zh": "从空白构造的公开展示内容，不是真实记录、生产配置或 API。",
+    "en": "Authored from scratch for presentation; not real records, production configuration, or an API."
+  },
+  "example_id": "DEMO_REPORT",
+  "title": {
+    "zh": "运行简报阅读示例",
+    "en": "An illustrative periodic view"
+  },
+  "period_label": {
+    "zh": "虚构观察周期",
+    "en": "Fictional observation period"
+  },
+  "sources": [
+    {
+      "source_id": "SOURCE_A",
+      "asset_id": "ASSET_X",
+      "summary": {
+        "zh": "本例呈现一项意图变化。",
+        "en": "This example presents an intent change."
+      }
+    },
+    {
+      "source_id": "SOURCE_B",
+      "asset_id": "ASSET_Y",
+      "summary": {
+        "zh": "本例未添加新的变化描述。",
+        "en": "This example adds no new change description."
+      }
+    }
+  ],
+  "observations": [
+    {
+      "zh": "来源摘要与本方结果分开呈现。",
+      "en": "Source summaries and execution outcomes are presented separately."
+    },
+    {
+      "zh": "展示中的状态差异仍需核实。",
+      "en": "The illustrated state difference still needs review."
+    }
+  ],
+  "review_items": [
+    {
+      "zh": "核对关注对象与展示范围。",
+      "en": "Review the object and scope of attention."
+    },
+    {
+      "zh": "不要把缺少新描述视为账户无风险。",
+      "en": "Do not interpret an absence of new descriptions as an absence of risk."
+    }
+  ],
+  "measurement_status": {
+    "zh": "未提供真实收益、金额或性能测量。",
+    "en": "No actual return, capital, or performance measurement is provided."
+  }
+}

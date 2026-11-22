@@ -1,0 +1,42 @@
+{
+  "data_classification": "synthetic",
+  "display_type": "illustration_only",
+  "label": "SIMULATED / 合成示例",
+  "notice": {
+    "zh": "从空白构造的公开展示内容，不是真实记录、生产配置或 API。",
+    "en": "Authored from scratch for presentation; not real records, production configuration, or an API."
+  },
+  "example_id": "DEMO_RISK",
+  "title": {
+    "zh": "需要关注的状态差异",
+    "en": "A state difference needing attention"
+  },
+  "source_id": "SOURCE_A",
+  "asset_id": "ASSET_X",
+  "known_facts": [
+    {
+      "zh": "合成场景中出现一项状态差异。",
+      "en": "A state difference is shown in the synthetic scenario."
+    }
+  ],
+  "unconfirmed": [
+    {
+      "zh": "该图示不足以确认本方最终状态。",
+      "en": "The illustration does not establish the final execution-side state."
+    }
+  ],
+  "response_record": {
+    "zh": "本例只呈现一条关注记录，不指定生产处置动作。",
+    "en": "This example presents an attention record without prescribing a production action."
+  },
+  "review_items": [
+    {
+      "zh": "核对对象、范围、状态和证据。",
+      "en": "Review the object, scope, state, and evidence."
+    }
+  ],
+  "outcome": {
+    "zh": "保留未确认事项；不宣称风险已经消除。",
+    "en": "Unconfirmed items remain open; risk resolution is not asserted."
+  }
+}
