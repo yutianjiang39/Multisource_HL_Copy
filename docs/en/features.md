@@ -1,121 +1,142 @@
 # Features
 
-Each item covers the scenario, the effect and the limits. Status terms:
+[中文](../features.md) · [Project home](../../README.en.md) · [Scenario guide](showcase.md) · [FAQ](faq.md)
 
-- **Implemented** — code complete with automated tests.
-- **Deployed** — code is on the server and can be enabled at any time.
-- **Live-verified** — run against real sources on mainnet and checked item by item.
+This page describes product capabilities, use cases, and observable outcomes. **These are capability descriptions, not implementation, deployment, or live-operation claims verified by this repository.** The repository contains documentation, conceptual illustrations, and synthetic data. It does not include a trading system that connects to accounts, receives live market data, or submits orders.
 
-As of 2026-11-21 the private repository's full suite on the server passed: 471 Python and 326 Rust tests. Test counts show the amount of verification work, not the absence of defects. See [Testing & methodology](testing.md).
+Illustrations and examples are marked **SIMULATED / 合成示例**. Their sources, assets, states, and values are entirely fictional; the illustrative screens are not production screenshots. See [PUBLIC_SCOPE.md](../../PUBLIC_SCOPE.md) for publication boundaries and [Verification scope](testing.md) for how to read the evidence.
 
-## 1. Multi-source following
+## Capability overview
 
-**Scenario:** follow several wallets with different styles from one account without them fighting over the same coin.
+| Capability | Question it aims to help a user answer | Public reading material |
+|---|---|---|
+| Multiple-source organization | Which sources are in view, and where did a record originate? | This page and the multiple-source scenario |
+| Order and position lifecycle | How does a source action relate to later states? Which outcomes remain unclear? | Following illustration and synthetic scenario |
+| Risk information and intervention outcomes | What was flagged, what action was recorded, and what still needs attention? | Risk illustration and synthetic event |
+| Configuration and scope changes | What should change, and which states deserve attention afterwards? | The change discussion on this page |
+| Uncertainty and human review | What is known, and what cannot yet be concluded? | Scenario guide and sample report |
+| Reports and notifications | What happened during a period of activity, and where should a reader look next? | Report illustration and synthetic report |
+| Rehearsal and scenario discussion | How can expected behavior be discussed before real trading? | Static synthetic examples |
+| Traceable explanations | How can a reader move from a summary to its relevant context? | Source labels, scenario descriptions, and event notes |
 
-**Effect:**
-- Each source has its own follow ratio; all sources share the account-level risk limits.
-- A coin belongs to one source at a time: the first source to signal takes it; ownership is released once the own account has no position, no resting order and no pending follow action on that coin.
-- Blocked signals are counted separately and reported apart from "missed" and "blocked by risk".
+These materials demonstrate how information can be presented. They are not an operational console or a running feature demonstration.
 
-**Limits:** no stacking or netting of several sources on one coin; proportional following only.
+## 1. Multiple-source organization
 
-**Status:** per-coin ownership and blocking were live-verified on 2026-11-19 with three sources for about 80 minutes on a small account. An event-ordering issue found during that run was fixed; the fix is deployed but not yet re-verified live.
+**Use case:** a user wants to understand several sources in one view without repeatedly reconstructing context from scattered records.
 
-**Correction (2026-11-22):** per-source ratios used to be cleared — falling back to the global ratio — whenever the server started an instance or applied a runtime retune. The 2026-11-19 run therefore followed every source at the same ratio, and per-source ratios were **not** live-verified. The fix has a regression test and is not yet deployed.
+**Capability description:** keep source identity, related assets, and activity states recognizable, so a summary still indicates which source a record concerns. A multiple-source view should also help a reader spot differences that need explanation.
 
-## 2. Full order following
+**Publicly visible:** SOURCE_A, SOURCE_B, ASSET_X, and ASSET_Y represent entirely fictional sources and assets. Readers can assess whether labels are clear and whether summaries connect to the relevant scenarios.
 
-**Scenario:** reflect the source's placing, amending, cancelling, fills and reduces on the own account quickly and proportionally.
+**Boundary:** displaying several source records together does not mean that they would produce simultaneous trades, and it does not explain capital allocation, execution priority, or source-conflict handling. The synthetic identifiers are not wallet addresses or tradable-asset configuration.
 
-**Effect:**
+## 2. Order and position lifecycle
 
-| Source action | Own action |
+**Use case:** after a source creates an order, changes its trading intent, or changes its position, a user wants to understand the status of related records.
+
+**Capability description:** describe source actions and related responses around common activities such as placing, modifying, and cancelling orders, increasing or reducing positions, and closing positions. Order lifecycles, position changes, and observable outcomes should remain distinct. An action at the source does not mean that the following account necessarily obtains the same result.
+
+| Reading subject | Information to convey |
 |---|---|
-| New resting order | Proportional maker-only mirror, price offset outward per config |
-| Price change only | Amend in place, no cancel-and-replace |
-| Cancel | Cancel the mirror |
-| Taker open | IOC follow at the source fill price within a slippage cap |
-| Reduce / close | Reduce-only by the source's reduce fraction; close entirely when the source goes flat |
-| Source no longer holds, own side still does | Periodic scan plus event triggers close the residual reduce-only |
+| An order appears | A source has a new trading intent, with a related response description |
+| Intent changes | A related record changes, with its earlier context still understandable |
+| An order ends | How the current record describes the end of that order |
+| A position changes | What changed in the position summary and whether a difference needs attention |
+| An outcome remains unclear | Available information does not confirm the result, so it must not be presented as complete |
 
-- Each source order is claimed exactly once; a crash and restart never places it twice.
-- An order that was sent but whose outcome is unknown is never resent automatically; the system waits for a confirmed final state.
+**Publicly visible:** the [following scenario](showcase.md#journey-one-understand-an-order-lifecycle) and [synthetic scenario data](../../examples/scenario.json) illustrate this organization of information.
 
-**Limits:** perpetual regular orders only — no spot, no trigger orders. Orders that fall below the exchange minimum after scaling are skipped or topped up per config.
+**Boundary:** public materials do not expose order construction, sizing calculations, execution paths, or confirmation mechanisms. They do not establish that real orders will fill, reproduce source activity fully, or achieve the same profit or loss.
 
-**Status:** live-verified (see [Showcase](showcase.md), scenario 1). Later fixes for races and partial-fill edge cases are deployed but not yet re-checked live.
+## 3. Risk information and intervention outcomes
 
-## 3. Risk control
+**Use case:** when account activity raises a concern, a user needs to understand the warning, the described intervention, and what remains unresolved.
 
-**Scenario:** stop in time when the source takes a large loss, the own side diverges from the source, or orders appear that this program did not place.
+**Capability description:** relate risk information to the relevant source, asset, or account context. Outcomes such as pausing new activity, cancelling orders, or addressing positions need understandable descriptions. Unconfirmed results should remain explicit.
 
-**Effect:**
-- The trading process estimates equity in memory; if drawdown from the run's peak exceeds the limit for a short while, it stops and flattens. Deposits and withdrawals do not affect the figure.
-- An independent guard process checks the exchange periodically with the same rules as a backstop, and also checks aggregate positions, direction and deviation, and foreign orders.
-- Events map to three actions: **pause new orders**, **cancel but keep positions**, **flatten**. Every action sends a notification.
+**Publicly visible:** the [risk-event illustration](showcase.md#journey-three-read-a-risk-notice-and-its-outcome) and [synthetic event data](../../examples/risk-event.json) show how to distinguish an event description, a recorded action, and an open question.
 
-**Limits:** thresholds and calculation details are private. Stops execute at market and may fill worse than the trigger; risk control promises neither profit nor a maximum loss.
+**Boundary:** examples do not establish a fixed mapping between real events and actions, and do not disclose thresholds, calculations, or control ordering. Describing a risk capability does not guarantee a loss limit, an execution result, or account safety.
 
-**Status:** both layers are deployed and always on in live runs; trigger paths are covered by automated tests.
+## 4. Configuration and scope changes
 
-## 4. Runtime changes
+**Use case:** a user wants to change the sources, asset scope, or other product settings under consideration and understand which activities might be affected.
 
-**Scenario:** change ratios, limits or switches while following, or swap a source.
+**Capability description:** distinguish the requested change, the settings currently presented, and any result record associated with that change. This supports review of what changed, what it concerns, and what still needs confirmation.
 
-**Effect:** every change is previewed first and classified:
-- **Instant** — ratios, limits, follow switches, etc.; effective from the next order with no pause.
-- **Rebuild** — coin scope, concurrency profile, etc.; cancels this program's orders, keeps positions and resumes with the new parameters after seconds to tens of seconds.
-- **Source switch** — requires the own side to be flat with no orders; old state is archived and the stop's equity and peak carry over.
+**Publicly visible:** this page describes the information that matters to a change-review experience. The repository contains no real parameter table or executable configuration example.
 
-Outcomes are one of four: applied, rejected, failed, rolled back — all audited. If the new config cannot start, the original is restored automatically.
+**Boundary:** there is no administration interface here, and changes cannot be applied. Public illustrations do not establish which fields can change, when changes take effect, what operating conditions they require, or how failures are handled.
 
-**Limits:** account, network and run mode cannot change at runtime.
+## 5. Uncertainty and human review
 
-**Status:** instant retuning was used once live on 2026-11-19 (changing the stop limit) and behaved as expected. More fields have since become instant-level; that is deployed but not yet live-verified. Source switching is verified in tests only.
+**Use case:** when state is missing, records differ, or a report does not fully explain an activity, a user needs to know which conclusions remain unsupported.
 
-## 5. Recovery
+**Capability description:** separate known information from open questions and retain useful context for human review. An exception summary should point to facts that need examination without presenting a hypothesis as an established cause.
 
-**Scenario:** feed disconnects, request timeouts, process faults.
+**Publicly visible:** differences, attention items, and outcome descriptions in the scenarios and report let readers assess whether the wording is sufficiently clear.
 
-**Effect:**
-- Two independent data feeds. If one drops while the other keeps pushing, reduces and cleanup continue. If both drop, new orders pause and resting mirrors follow a grace period.
-- After reconnecting the system re-reads and reconciles; coins that do not match are flagged and held until verified.
-- Orders with unknown outcomes are not assumed to have succeeded or failed; a human resolves them from the record if needed.
-- Shutdown order: stop new orders → cancel → reconcile → persist.
+**Boundary:** these materials contain no fault-recovery procedure, retry rules, or operational response guide. They do not imply that all exceptions can be resolved automatically.
 
-**Limits:** not every fault recovers automatically. A crashed process is not restarted automatically; it alerts and a human decides.
+## 6. Reports and notifications
 
-**Status:** deployed and in use during live runs.
+**Use case:** a user cannot monitor all activity continuously and needs a readable summary that identifies what deserves attention.
 
-## 6. Reports and alerts
+**Capability description:** organize reports around source activity, outstanding orders, position summaries, relevant differences, and attention items. An event notification focuses on one change worth reviewing; a periodic summary supports an overall view. A reader should be able to distinguish the overall activity summary from an unconfirmed outcome in a particular record.
 
-**Scenario:** no panel and nobody watching constantly — the system must tell people what happened.
+**Publicly visible:** the [report illustration](showcase.md#journey-four-read-an-activity-report) and [synthetic report data](../../examples/report.json). Explanatory text demonstrates a style of presentation, not a diagnosis of a real account.
 
-**Effect:**
-- Real-time events: opens, adds/reduces, closes (with holding time and realized PnL), flips, margin usage, drawdown warnings, follow anomalies. Batched and rate-limited.
-- Periodic reports: replication quality, deviation from sources, fill prices and latency, period and cumulative PnL, missed and risk-blocked signals, and an "attention" section.
-- An AI assistant on the server reads only logs and metrics and adds an anomaly analysis to the report.
+**Boundary:** this repository sends no notifications and provides no live reporting service. Synthetic totals are not trading records, profit statistics, latency measurements, or reliability evidence.
 
-**Limits:** no web panel. The report image in the showcase is a re-laid-out illustration with synthetic data.
+## 7. Rehearsal and scenario discussion
 
-**Status:** deployed, in live use.
+**Use case:** when discussing a new source or product settings, participants first clarify the states and report content they would expect to see.
 
-## 7. Dry-run rehearsal
+**Capability description:** rehearsal can support discussion of expected behavior, reveal missing scenarios, and help assess whether state descriptions are understandable.
 
-**Scenario:** try a new source or new parameters without placing real orders.
+**Publicly visible:** the repository provides static synthetic examples for step-by-step reading or review discussions. They are not an executable trading simulator.
 
-**Effect:** sources are still read from real mainnet activity; the own side uses a local ledger to simulate fills and balances; following, risk and reports run as usual.
+**Boundary:** reading a fictional scenario is not a backtest, a simulation run, or real-market validation. The examples do not model liquidity, fill probability, fees, margin, or returns.
 
-**Limits:** rehearsal results prove nothing about real fills, margin or profit.
+## 8. Traceable explanations
 
-**Status:** deployed, used many times.
+**Use case:** a reader notices an exception or difference in a summary and wants to find its relevant source and scenario.
 
-## 8. Rolling incident trace
+**Capability description:** use clear labels and related descriptions to connect the overall summary to specific context, supporting discussion of what happened and what is currently known.
 
-**Scenario:** after a problem, find out what the system received and what it decided.
+**Publicly visible:** the relationship between documentation, illustrations, and synthetic data. Readers can directly assess the clarity of those public materials.
 
-**Effect:** every input to the execution core and every exchange call is recorded in compressed segments, written in the background without slowing trading. Each instance keeps a rolling window with a size cap; if the queue is full one segment is dropped and marked, and recording continues.
+**Boundary:** the repository provides no production logs, individual fills, account history, or internal recording formats. Public scenarios cannot replace an investigation of real activity.
 
-**Limits:** recent history only. Offline replay has been removed from the main program; it records but does not replay.
+## What visitors can evaluate
 
-**Status:** deployed; no trace has yet been produced during a live run.
+| Can be evaluated from this repository | Cannot be evaluated from this repository alone |
+|---|---|
+| Clarity and consistency of product descriptions | Whether private features are implemented, deployed, or live-verified |
+| Whether sources, events, and outcomes are easy to distinguish | Correctness of multiple-source execution or sizing |
+| Whether examples disclose their synthetic nature and limits | Real execution speed, following quality, or long-term availability |
+| Readability of risk notices and attention items | Whether risk controls limit real losses |
+| Alignment of Chinese, English, illustrations, and data | Profitability under any market conditions |
+
+## Frequently asked questions
+
+**Can I connect an account or start trading?**  
+No. This is a showcase package without a trading runtime, account integration, or executable production configuration.
+
+**Are the illustrations actual product screens?**  
+No. They were created to explain information relationships and do not establish the existence of an administration panel or live service.
+
+**What is the product context and public support scope?**  
+The product context is multiple-source following for perpetual contracts. Public materials discuss orders, positions, risk, and reports. They do not imply a compatibility commitment for any particular market, order type, or third-party service.
+
+**Why might a source action lack a corresponding trading result?**  
+A public example may show only part of a situation. “A source action occurred,” “a response was recorded,” and “an outcome was confirmed” are distinct statements. A static illustration cannot establish the private system's decision rationale.
+
+**How can I provide useful feedback?**  
+Identify the document location, unclear wording, or missing reading scenario, and use fictional identifiers to explain the issue. Real account details and operational records are not needed for public feedback.
+
+**How may these materials be used?**  
+See [LICENSE](../../LICENSE) and [Public scope](../../PUBLIC_SCOPE.md) for applicable terms. Capability descriptions do not grant access to the private implementation.
+
+Continue with the [Scenario guide](showcase.md) or the [Public showcase roadmap](roadmap.md).

@@ -1,22 +1,23 @@
-# 版本记录 / Releases
+# 公开版本记录 / Public releases
 
-展示仓库的版本只记录对外可披露的内容变化，不对应私有仓库的内部提交、修复过程或部署。
+这里只记录展示材料变化，不对应私有版本、部署时间线或修复清单。
 
-This file records changes to the public showcase only. It does not mirror the private repository's commits, fixes or deployments.
+These notes concern presentation materials only, not private versions, deployments, or fixes.
 
-## Showcase v1.1 — 2026-11-22
+## Showcase v1.2 — 2026-11-22
 
-- 重新定位：多来源交易执行引擎，跟单是应用场景；README 补充分层、设计目标和能力成熟度表。
-- 新增 [测试与统计口径](docs/testing.md)：验证分层、自动化测试规模、公开统计规则。
-- [系统概览](docs/overview.md) 补充职责边界与工程取舍。
-- [PUBLIC_SCOPE.md](PUBLIC_SCOPE.md) 补充披露原则；效果页的账户与单笔规模改为量级描述。
-- **更正：** 逐来源比例此前在服务器上会被清空、退回全局比例，2026-11-19 的多来源实盘没有验证到这一点；功能页已更正。
-- 新增英文版：[README.en.md](README.en.md)、[docs/en/](docs/en/)。
+- 重写中英文首页、功能说明、职责概览与场景导览，补齐 FAQ 和公开材料路线图。
+- 以四组概念图、合成 JSON 与阅读说明丰富展示；所有场景明确标记为虚构。
+- 收紧披露范围，移除接口轮廓、内部规则和真实运行摘要。
+- 区分能力描述、合成示例与公开文件检查，避免把展示检查当成生产验证。
+- 新增按清单校验和打包的离线工具，以及公开内容 CI、反馈模板和维护说明。
+- 交付干净的工作树归档，不包含 Git 历史或生成缓存。
+- 明确本版新增原创内容的权利边界，并保留此前的许可记录与相应权利。
 
-English: repositioned as a multi-source execution engine; added architecture boundaries, design goals, capability maturity, a testing & methodology page, disclosure rules and English documentation. Corrected the multi-source status: per-source size ratios were not in effect during the 2026-11-19 live run.
+English: refreshed bilingual explanations; added explicitly synthetic scenarios and data; narrowed implementation disclosure; separated descriptions from evidence; added offline checks, allowlisted packaging, public-content CI, and contribution guidance; retained prior rights while identifying new original material.
 
-## Showcase v1.0 — 2026-11-21
+## 更早版本 / Earlier editions
 
-- 首版：项目介绍、8 个功能主题、3 个代表场景与 2026-11-16 影子测试结果、系统概览、路线图、3 个示意代码、4 张示意图。
+早期版本建立了项目介绍、中英文资料与示意图。当前版不重复其中的生产运行摘要、详细接口或内部修复说明。旧版所授予的相应许可继续适用，参见 [旧许可记录](LICENSES/LEGACY_LICENSE.txt)。
 
-English: initial release — project introduction, features, showcase scenarios with the 2026-11-16 shadow test, overview, roadmap, outline code and illustrative diagrams.
+Earlier editions introduced the project, bilingual documentation, and illustrations. This edition does not repeat their operating summaries, detailed interfaces, or internal fix notes. Applicable earlier permissions remain; see the [legacy notice](LICENSES/LEGACY_LICENSE.txt).

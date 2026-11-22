@@ -1,64 +1,72 @@
 # Multisource HL Copy
 
-**Multi-source trading execution engine for Hyperliquid**
+**Multi-source trading execution for Hyperliquid · Public showcase**
 
-Event-driven · Rust execution core · Fault-tolerant · Risk-aware
+A clear view of source intent, execution outcomes, and the risks that need attention.
 
-[中文](README.md) · [Architecture](docs/en/architecture.md) · [Features](docs/en/features.md) · [Showcase](docs/en/showcase.md) · [Testing & methodology](docs/en/testing.md) · [Releases](RELEASES.md)
+[中文](README.md) · [Capabilities](docs/en/features.md) · [Scenarios](docs/en/showcase.md) · [Overview](docs/en/architecture.md) · [Evidence & limits](docs/en/testing.md) · [FAQ](docs/en/faq.md)
 
----
+![Sources, execution concerns, and operational visibility. A concept illustration, not a production architecture.](assets/overview.svg)
 
-One execution account follows the perpetual-futures orders of several Hyperliquid source wallets at once: it mirrors resting orders proportionally, follows reduces and taker opens, and pauses, cancels or flattens on risk events. Copy trading is the application; the focus of the project is the execution system behind it — how events from multiple sources are attributed, how each order's lifecycle is closed out, and how the system avoids duplicates, refuses to guess and stops safely when something is wrong.
+> This repository presents the project's capability scope, product ideas, and synthetic scenarios. The production trading implementation remains private. This package cannot connect an account or trade. Every illustration and data example is independently constructed for explanation, not taken from a live run.
 
-> This is a **showcase repository**. It explains what the system does, how it is layered and how far it has been verified. The production implementation is private; there is no runnable trading program and no demo here. See [PUBLIC_SCOPE.md](PUBLIC_SCOPE.md) (Chinese).
+## What the project focuses on
 
-![A normal follow: source action → system response → final state (illustrative data)](assets/follow_flow.svg)
+When one execution account follows several sources, an operator needs to understand which source changes are visible, what happened on the execution side, what is still uncertain, and what needs attention.
 
-## The problem
+Multisource HL Copy organizes execution, operational control, and reporting around those questions. Public materials explain the product experience while keeping execution algorithms, decision rules, and deployment details private.
 
-Naive copy trading breaks under multiple sources, rapid place/cancel cycles, disconnects and partial fills: an order is placed twice, the source cancels but the mirror stays, two sources cancel each other out on the same coin, or the bot trades on stale data after a reconnect. This project treats those cases as first-class concerns. The goal: **keep up, cancel cleanly, reconcile exactly, and stop first when in doubt.**
+## Capability map
 
-## Layers
+These are capability themes, not claims that this public package verifies a live trading system.
 
-| Layer | Responsibility | Implementation |
-|---|---|---|
-| **Control plane** | Config validation, start plans, lifecycle (start / stop / retune / switch source), multi-version deployment; sensitive actions need explicit human authorization | Python |
-| **Execution core** | Consumes source and own-account events; admission, risk accounting, place, amend, cancel, follow reduces, residual cleanup and recovery. Python is not on the hot path | Rust |
-| **State & risk** | Durable state guarantees each source order is handled once; in-process drawdown stop plus an independent external guard | Rust and Python |
-| **Observability** | Real-time event notifications, periodic reports, rolling incident trace | Rust and Python |
+| Theme | The operator's question | Public presentation |
+| --- | --- | --- |
+| Multiple sources | How can activity and state be understood separately? | Anonymous source cards and parallel scenarios |
+| Order following | How do source intentions relate to execution outcomes? | Conceptual creation, change, and end examples |
+| Position changes | Which changes or unresolved facts need attention? | Qualitative descriptions without sizing rules |
+| Operational control | What is running, what is in scope, and what was observed? | Responsibility and interaction descriptions |
+| Risk visibility | Which facts are confirmed, and which remain unknown? | Illustrative notices and review items |
+| Periodic reporting | What changed, and what should be reviewed next? | A synthetic report with a field guide |
 
-## Design goals
+See [Capabilities](docs/en/features.md). Scenario endings are authored examples. They do not imply that a source order must be followed, filled, or filled at the same price.
 
-1. **Idempotent execution** — each source order is claimed once, even across crashes; orders with an unknown outcome are never resent blindly.
-2. **Stop on insufficient evidence** — incomplete data, failed reconciliation or uncertain scope pauses trading instead of guessing.
-3. **Source isolation** — a coin belongs to one source at a time, first come first served; blocked signals are recorded separately.
-4. **Layered risk** — in-process stop and an external guard; different events pause new orders, cancel while keeping positions, or flatten.
-5. **Humans decide** — start, stop, flatten, deploy and config changes all require authorization; the program itself only performs risk stops.
+## A three-minute tour
 
-## Capabilities and maturity
+1. Read [Scenarios](docs/en/showcase.md) for order changes, multiple sources, risk notices, and reports.
+2. Read [Overview](docs/en/architecture.md) for responsibilities and product trade-offs.
+3. Read [Evidence & limits](docs/en/testing.md) to distinguish descriptions, illustrations, and verification.
+4. Read [Public scope](docs/en/public-scope.md) for this edition's disclosure boundaries.
 
-Status levels: **implemented** (automated tests) → **deployed** (on the server) → **live-verified** (run against real sources on mainnet and checked).
+![Source intent, execution-side observations, and facts still awaiting confirmation. Synthetic content only.](assets/follow_flow.svg)
 
-| Capability | Status |
-|---|---|
-| Full order following: mirroring, in-place amend, cancel, taker open, follow reduce, residual cleanup | Live-verified; later edge-case fixes deployed, pending live re-check |
-| Multi-source: per-coin ownership, first come first served, blocked signals reported | Live-verified; a per-source ratio fix is not yet deployed |
-| Risk control: in-process drawdown stop + external guard, three actions | Deployed, always on in live runs |
-| Runtime changes: instant / rebuild retuning, source switch, automatic rollback | Instant retune used live; source switch verified in tests only |
-| Recovery: dual data feeds, pause and grace on disconnect, reconcile on resume | Deployed, in use during live runs |
-| Reports & alerts, dry-run rehearsal, rolling incident trace | Deployed |
+## What works locally
 
-## Measured results (aggregate only)
+Read the Markdown, open the SVGs, or inspect the [synthetic examples](examples/README.md). To validate and package the showcase, use Python 3.10 or newer:
 
-| Category | Result | Conditions |
-|---|---|---|
-| Automated tests | 471 Python, 326 Rust, all passing | 2026-11-21, full suite on the server |
-| Shadow test: scenarios | 9 scenario types, two rounds; every conclusive case behaved as designed, no leftover orders, local state matched the exchange | 2026-11-16, mainnet, small account, single source, ~5 min per round |
-| Shadow test: end-to-end latency (median) | ~0.8 s to place, ~0.7 s to cancel; ~0.2 s of that is this system, the rest is exchange confirmation | Same; exchange timestamps |
-| Multi-source live run | Three sources for ~80 minutes, ended flat | 2026-11-19, mainnet, small account |
+```bash
+python3 tools/check_public.py
+python3 tools/package_public.py --output ../Multisource_HL_Copy-public.zip
+```
 
-These numbers describe execution correctness and latency. They are **not evidence of profitability** and do not generalize to all wallets or market conditions.
+These utilities operate on local showcase files only. They contain no trading SDK, account configuration, key input, network query, or order submission. The GitHub workflow also validates only public content.
 
-## License
+## Reading guide
 
-Text and images: CC BY 4.0. `outline/` illustrative code: MIT. See [LICENSE](LICENSE). The private production implementation is not covered. Nothing here is investment advice.
+| Page | Contents |
+| --- | --- |
+| [Capabilities](docs/en/features.md) | Product scope, scenarios, and limitations |
+| [Scenarios](docs/en/showcase.md) | Four independently constructed reading journeys |
+| [Overview](docs/en/architecture.md) | High-level responsibilities and observable outcomes |
+| [Evidence & limits](docs/en/testing.md) | What this package can and cannot establish |
+| [FAQ](docs/en/faq.md) | Running, examples, reuse, and feedback |
+| [Roadmap](docs/en/roadmap.md) | Improvements to public presentation materials |
+| [Maintaining this showcase](docs/maintaining-public.md) | Validation, packaging, and history boundaries; bilingual |
+| [Public scope](docs/en/public-scope.md) | Disclosure boundaries and licensing |
+| [Releases](RELEASES.md) | Public-material changes only |
+
+## Feedback and rights
+
+Suggestions about wording, diagrams, translation, and product communication are welcome. Follow [Contributing](CONTRIBUTING.md) and avoid account or deployment details. Read [Security](SECURITY.md) before reporting sensitive material.
+
+Rights are reserved in new original material in this edition; earlier permissions remain applicable to the corresponding material. See [LICENSE](LICENSE) and the [legacy notice](LICENSES/LEGACY_LICENSE.txt). This showcase does not open-source the production implementation or promise returns. Hyperliquid identifies the platform the project concerns; it does not imply affiliation or endorsement.

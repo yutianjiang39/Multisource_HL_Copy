@@ -1,33 +1,46 @@
-# Testing & methodology
+# Evidence and verification limits
 
-How the project is verified and how public numbers are reported. Aggregates only — no individual orders, raw logs or event timelines.
+[中文](../testing.md) · [Home](../../README.en.md)
 
-## Verification layers
+This page explains what a reader can independently inspect in the public repository. It is not a private-system test report and publishes no production test counts, deployment status, operating dates, or latency results.
 
-| Layer | What it does | What it proves | What it does not prove |
-|---|---|---|---|
-| **Unit tests** | Config validation, risk decisions, report calculations, control commands | Modules behave as specified | How modules work together |
-| **Core scenario tests** | Drive the Rust execution core with constructed source and own-account events; check orders, state and risk accounting | Races, partial fills, disconnects and restarts behave as designed, repeatably | Real exchange acceptance and fills |
-| **Mock exchange** | Run the execution program end to end against a test exchange | Process-level start, stop, recovery and persistence | Real network latency and exchange rules |
-| **Dry-run** | Real mainnet sources, local ledger for the own side | Follow decisions, risk and reports under real source rhythm | Real fills, margin and profit |
-| **Shadow test** | Scripted test wallet as source, follower live on mainnet with a small account | Main paths work on the real exchange; latency is measurable | Real source behaviour, long runs |
-| **Live runs** | Real sources, small mainnet account | Behaviour under real conditions over time | Large capital, extreme markets |
+## Three different kinds of material
 
-The three status levels (implemented / deployed / live-verified) follow this table: anything verified only by the first four layers is at most "deployed".
+| Kind | Examples here | What it can establish |
+| --- | --- | --- |
+| Capability descriptions | README, capabilities, responsibility overview | The project's concerns and product communication |
+| Synthetic illustrations | SVGs, JSON, scenario guide | A way to read or present information |
+| Executable local checks | File inventory, links, examples, and figure checks | Current public files meet the specific checked rules |
 
-## Automated test scale
+The first two do not prove real fills or production reliability. Passing the third does not validate the private engine, trading strategy, idempotency, recovery, or risk controls.
 
-| Date | Python | Rust | Result |
-|---|---|---|---|
-| 2026-11-21 | 471 | 326 | All passing |
+## Local validation
 
-Run in full on the server. Scenario categories include core following, follow reduces, taker opens, multi-source ownership, disconnects and grace periods, fault injection, control handoff, emergency stop and flatten, runtime retuning, ledger and fund flows, new listings, and request budgets. Test counts show verification effort, not the absence of defects.
+From the repository root, with Python 3.10 or newer:
 
-## Reporting rules
+```bash
+python3 tools/check_public.py
+python3 tools/package_public.py --output ../Multisource_HL_Copy-public.zip
+```
 
-- **Aggregates only.** No breakdown by source, coin or account; no individual orders or timelines.
-- **Conditions stated.** Every number carries its date, environment (mock / shadow / live), sample range and tested version; numbers from different conditions are not compared directly.
-- **Scale as magnitude only.** Account size and order size are described as "small" or "close to the exchange minimum", never exact.
-- **Latency on exchange timestamps.** End-to-end latency runs from the source order becoming effective to the mirror becoming effective, both on exchange timestamps, unaffected by server clock skew; segment timings state their clock source.
-- **Not profitability.** Execution latency and reliability say the system keeps up and reconciles, not that copying makes money.
-- **Results age.** Fixes after a test do not make old results hold for the new version; anything not re-run is marked as such.
+The validator uses [public-files.txt](../../public-files.txt) as the release inventory. It checks paths, relative links, synthetic JSON labels, safe SVG structure, and selected sensitive patterns. The packager includes only listed files, excludes Git history, and checks the archive content again.
+
+The tools do not query exchanges, read accounts, simulate trading, or inspect private code. They cannot detect every trade secret, semantic disclosure, visual meaning, or previously published history; human review remains necessary.
+
+The CI workflow repeats only the public-content check. Its presence does not establish that remote CI has run.
+
+## If measurement summaries are published later
+
+Any summary should undergo a separate disclosure review and explain:
+
+- The outcome measured and its definition.
+- Sample selection, omitted samples, and applicability.
+- Observed outcomes versus design goals.
+- Uncovered conditions, negative results, and uncertainty.
+- Whether evidence still applies to the version discussed.
+
+Passing tests does not imply absence of defects. Limited samples should not become promises of universal fills, no duplicates, or returns. This edition does not publish production measurement data.
+
+## Acceptance criteria for this edition
+
+Chinese and English agree; images, text, and JSON identify synthetic material; unresolved results remain unresolved; relative resources open; interface outlines are excluded; the archive matches its inventory. These checks concern public-content quality and disclosure boundaries.
