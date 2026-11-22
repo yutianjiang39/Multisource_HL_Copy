@@ -1,0 +1,30 @@
+name: 文档问题 / Documentation
+description: 改进公开文字、图示、翻译或合成示例
+title: "[Docs] "
+body:
+  - type: markdown
+    attributes:
+      value: "请只引用公开材料。不要附真实地址、账户、日志、配置、截图或凭据。Public content only; no account or operational data."
+  - type: input
+    id: page
+    attributes:
+      label: 公开文件路径 / Public file path
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: 哪处不清楚或不准确 / What is unclear or inaccurate?
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 修改建议或虚构例子 / Suggested wording or invented example
+  - type: checkboxes
+    id: disclosure
+    attributes:
+      label: 提交检查 / Submission check
+      options:
+        - label: 内容仅含公开信息或独立构造的例子，无真实运行数据。 / Public or invented content only.
+          required: true

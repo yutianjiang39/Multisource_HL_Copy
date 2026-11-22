@@ -1,0 +1,31 @@
+name: 场景建议 / Showcase suggestion
+description: 提议更清晰的能力介绍、阅读旅程或虚构场景
+title: "[Showcase] "
+body:
+  - type: markdown
+    attributes:
+      value: "这里讨论公开展示体验，不接收生产实现、账户接入或交易排障资料。This form concerns presentation only."
+  - type: textarea
+    id: question
+    attributes:
+      label: 希望读者理解的问题 / What should a reader understand?
+    validations:
+      required: true
+  - type: textarea
+    id: scenario
+    attributes:
+      label: 独立构造的场景 / An independently invented scenario
+      description: 使用 SOURCE_A 与 ASSET_X 等虚构符号，不提供真实数量或记录。
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: 应保留的不确定性与边界 / Limits or uncertainty to preserve
+  - type: checkboxes
+    id: disclosure
+    attributes:
+      label: 提交检查 / Submission check
+      options:
+        - label: 没有真实身份、账户、日志、配置或私有实现。 / No private or operational data.
+          required: true

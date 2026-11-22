@@ -1,0 +1,25 @@
+name: Public showcase checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-showcase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the public showcase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Check public files offline
+        run: python3 tools/check_public.py
+      - name: Exercise public validator failure cases
+        run: python3 tools/check_public.py --self-test
+
+# These steps validate showcase files only. They do not run a trading engine.
