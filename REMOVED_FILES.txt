@@ -1,8 +1,0 @@
-Files removed from the current showcase working tree:
-outline/control.py
-outline/execution.rs
-outline/observability.py
-
-When updating an existing repository, remove these old tracked files as well.
-Overwriting the other files alone does not remove them.
-This list does not instruct rewriting or deleting Git history.

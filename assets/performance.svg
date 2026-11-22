@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif">
 <title id="title">性能与规模 / Performance and scale</title>
-<desc id="desc">Historical mainnet local submission p99 43 ms across 1765 order samples; simulated two-source bursts at 150 signals per second; eight configurable targets; separate three-target live and five-target rehearsal records. Each result has its own scope.</desc>
+<desc id="desc">Historical mainnet local submission p99 23 ms across 1765 order samples; simulated two-source bursts at 150 signals per second; eight configurable targets; separate three-target live and five-target rehearsal records. Each result has its own scope.</desc>
 <!-- Result-level summary. Historical mainnet, simulation and configuration are distinct. No source identities or implementation details. -->
 <rect x="0" y="0" width="1200" height="760" rx="0" fill="#F7F5ED"/>
 <rect x="52" y="44" width="32" height="32" rx="9" fill="#173F46"/>
@@ -12,13 +12,13 @@
 <line x1="52" y1="191" x2="1148" y2="191" stroke="#D2DDD6"/>
 <rect x="52" y="221" width="352" height="280" rx="20" fill="#FFFFFF" stroke="#D2DDD6"/>
 <text x="76" y="257" font-size="13" fill="#2D716A" font-weight="600" text-anchor="start">主网历史实测 / MAINNET</text>
-<text x="74" y="342" font-size="76" fill="#173F46" font-weight="700" text-anchor="start">43</text>
+<text x="74" y="342" font-size="76" fill="#173F46" font-weight="700" text-anchor="start">23</text>
 <text x="189" y="339" font-size="26" fill="#2D716A" font-weight="500" text-anchor="start">ms</text>
 <text x="76" y="387" font-size="24" fill="#173F46" font-weight="600" text-anchor="start">本地提交 p99</text>
 <text x="76" y="414" font-size="15" fill="#557479" font-weight="400" text-anchor="start">Local submission p99</text>
 <line x1="76" y1="435" x2="380" y2="435" stroke="#D2DDD6"/>
-<text x="76" y="464" font-size="17" fill="#173F46" font-weight="400" text-anchor="start">1,765 笔订单样本 · p50 24 ms</text>
-<text x="76" y="486" font-size="12" fill="#557479" font-weight="400" text-anchor="start">1,765 order samples · p50 24 ms</text>
+<text x="76" y="464" font-size="17" fill="#173F46" font-weight="400" text-anchor="start">1,765 笔订单样本 · p50 14 ms</text>
+<text x="76" y="486" font-size="12" fill="#557479" font-weight="400" text-anchor="start">1,765 order samples · p50 14 ms</text>
 <rect x="424" y="221" width="352" height="280" rx="20" fill="#FFFFFF" stroke="#D2DDD6"/>
 <text x="448" y="257" font-size="13" fill="#2D716A" font-weight="600" text-anchor="start">模拟负载验收 / SIMULATION</text>
 <text x="446" y="342" font-size="76" fill="#173F46" font-weight="700" text-anchor="start">150</text>
@@ -43,7 +43,7 @@
 <text x="76" y="600" font-size="15" fill="#557479" font-weight="400" text-anchor="start">3 targets · approximately 80 minutes on mainnet</text>
 <text x="636" y="565" font-size="24" fill="#173F46" font-weight="600" text-anchor="start">5 个目标 · 真实数据演练</text>
 <text x="636" y="600" font-size="15" fill="#557479" font-weight="400" text-anchor="start">5 targets · live data, simulated execution</text>
-<text x="52" y="671" font-size="19" fill="#173F46" font-weight="500" text-anchor="start">43 ms 仅本地提交；150/s 为短脉冲；8 是配置上限。</text>
+<text x="52" y="671" font-size="19" fill="#173F46" font-weight="500" text-anchor="start">23 ms 仅本地提交；150/s 为短脉冲；8 是配置上限。</text>
 <text x="52" y="700" font-size="13" fill="#557479" font-weight="400" text-anchor="start">Local submission is not a fill. Burst rate is not sustained throughput. Configuration is not measured capacity.</text>
 <text x="52" y="736" font-size="13" fill="#557479" font-weight="400" text-anchor="start">历史记录摘要 · 完整样本与条件见性能页 / Historical records · full scope in the performance guide</text>
 </svg>
