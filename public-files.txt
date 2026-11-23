@@ -1,0 +1,22 @@
+# Reviewed public release inventory. Additions require a disclosure review.
+.gitattributes
+.github/ISSUE_TEMPLATE/config.yml
+.github/ISSUE_TEMPLATE/documentation.yml
+.github/ISSUE_TEMPLATE/showcase.yml
+.github/workflows/public-check.yml
+.gitignore
+CONTRIBUTING.md
+LICENSE
+LICENSES/LEGACY_LICENSE.txt
+LICENSES/README.md
+PUBLIC_SCOPE.md
+README.md
+RELEASES.md
+SECURITY.md
+assets/performance.svg
+docs/faq.md
+docs/features.md
+docs/maintaining-public.md
+docs/performance.md
+public-files.txt
+tools/check_public.py
