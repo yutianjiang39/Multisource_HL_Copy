@@ -4,6 +4,12 @@
 
 事件驱动 · Rust 实时执行 · 多目标跟随 · 风险与运行可观测性
 
+[![公开文件检查状态](https://img.shields.io/github/actions/workflow/status/yutianjiang39/Multisource_HL_Copy/public-check.yml?style=flat-square&label=checks&labelColor=161B22)](https://github.com/yutianjiang39/Multisource_HL_Copy/actions/workflows/public-check.yml)
+[![Star 数](https://img.shields.io/github/stars/yutianjiang39/Multisource_HL_Copy?style=flat-square&color=3FB8AF&labelColor=161B22)](https://github.com/yutianjiang39/Multisource_HL_Copy/stargazers)
+[![最新展示版本](https://img.shields.io/github/v/tag/yutianjiang39/Multisource_HL_Copy?style=flat-square&label=showcase&color=3FB8AF&labelColor=161B22)](RELEASES.md)
+![Rust](https://img.shields.io/badge/Rust-161B22?style=flat-square&logo=rust&logoColor=DEA584)
+![Python](https://img.shields.io/badge/Python-161B22?style=flat-square&logo=python&logoColor=3776AB)
+
 一个执行账户关注多个来源，覆盖委托跟随、仓位变化、风险干预和运行报告。项目围绕低本地处理开销、突发信号承载和多来源运行组织执行能力。
 
 ![性能摘要：23 ms 本地提交 p99、150 条信号每秒脉冲测试、8 个可配置目标。不同数字的证据范围分别标注。](assets/performance.svg)
