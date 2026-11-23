@@ -39,8 +39,8 @@
 <text x="820" y="486" font-size="12" fill="#557479" font-weight="400" text-anchor="start">Unique total, including primary</text>
 <rect x="52" y="525" width="536" height="100" rx="16" fill="#E5EFE8"/>
 <rect x="612" y="525" width="536" height="100" rx="16" fill="#FCEDD9"/>
-<text x="76" y="565" font-size="24" fill="#173F46" font-weight="600" text-anchor="start">3 个目标 · 约 80 分钟实盘记录</text>
-<text x="76" y="600" font-size="15" fill="#557479" font-weight="400" text-anchor="start">3 targets · approximately 80 minutes on mainnet</text>
+<text x="76" y="565" font-size="24" fill="#173F46" font-weight="600" text-anchor="start">3 个目标 · 约 144 小时实盘记录</text>
+<text x="76" y="600" font-size="15" fill="#557479" font-weight="400" text-anchor="start">3 targets · approximately 144 hours on mainnet</text>
 <text x="636" y="565" font-size="24" fill="#173F46" font-weight="600" text-anchor="start">5 个目标 · 真实数据演练</text>
 <text x="636" y="600" font-size="15" fill="#557479" font-weight="400" text-anchor="start">5 targets · live data, simulated execution</text>
 <text x="52" y="671" font-size="19" fill="#173F46" font-weight="500" text-anchor="start">23 ms 仅本地提交；150/s 为短脉冲；8 是配置上限。</text>
